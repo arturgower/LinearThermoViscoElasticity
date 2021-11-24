@@ -1,0 +1,1305 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Mathematica 10.2' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       158,          7]
+NotebookDataLength[     51584,       1297]
+NotebookOptionsPosition[     51239,       1283]
+NotebookOutlinePosition[     51627,       1299]
+CellTagsIndexPosition[     51584,       1296]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+Cell[BoxData[
+ RowBox[{"\[IndentingNewLine]", 
+  RowBox[{"(*", 
+   RowBox[{
+    RowBox[{
+     RowBox[{
+     "Suppose", " ", "there", " ", "is", " ", "a", " ", "surface", " ", "at", 
+      " ", "z"}], " ", "=", "0"}], ",", " ", 
+    RowBox[{
+     RowBox[{
+     "with", " ", "the", " ", "incident", " ", "wave", " ", "originating", 
+      " ", "at", " ", 
+      RowBox[{"{", 
+       RowBox[{"x", ",", "y", ",", "z"}], "}"}]}], " ", "=", " ", 
+     RowBox[{"{", 
+      RowBox[{"0", ",", "0", ",", "h"}], "}"}]}], ",", " ", 
+    RowBox[{
+     RowBox[{"so", " ", "we", " ", "imagine", " ", "that", " ", "h"}], " ", 
+     ">", 
+     RowBox[{
+     "0", " ", "and", " ", "the", " ", "incident", " ", "TW", " ", "has", " ",
+       "k3"}], "<", 
+     RowBox[{
+     "0.", " ", "All", " ", "reflected", " ", "and", " ", "transmitted", " ", 
+      "waves", " ", "are", " ", "calculated"}]}]}], "*)"}], 
+  "\[IndentingNewLine]", 
+  RowBox[{
+   RowBox[{"ClearAll", "[", 
+    RowBox[{
+    "\"\<height\>\"", ",", "TWIn", ",", "TW\[Psi]", ",", "TW\[Xi]", ",", 
+     "TW\[Zeta]", ",", "listTWRs", ",", "listTWTs", ",", "R", ",", "T", ",", 
+     "subNtoT"}], "]"}], "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"ClearAll", "[", 
+     RowBox[{"BCeqnsF", ",", "ReflectedWaveNumbers", ",", "ScatteredTW"}], 
+     "]"}], ";"}], "\[IndentingNewLine]", "\[IndentingNewLine]", 
+   RowBox[{
+   "\"\<ClampedBC\>\"", ";", " ", "\"\<FreeBC\>\"", ";", " ", 
+    "\"\<FixedTempBC\>\"", ";", "\"\<NoHeatFluxBC\>\"", ";"}], 
+   "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"parameters", " ", "=", " ", 
+     RowBox[{"{", 
+      RowBox[{
+      "\"\<\[Mu]\>\"", ",", "\"\<\[Lambda]\>\"", ",", "\"\<\[Beta]\>\"", ",", 
+       "\"\<\[Eta]\[Mu]\>\"", ",", "\"\<\[Eta]\[Lambda]\>\"", ",", 
+       "\"\<\[Eta]\[Beta]\>\"", ",", "\"\<\[Rho]\>\"", ",", "\"\<L\>\"", ",", 
+       "\"\<Cv\>\"", ",", "\"\<T0\>\"", ",", "\"\<\[Alpha]\>\"", ",", 
+       "\"\<\[Kappa]\>\"", ",", "\"\<pT\>\""}], "}"}]}], ";"}], 
+   "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{
+     RowBox[{"subNto", "[", "T", "]"}], " ", "=", " ", 
+     RowBox[{
+      RowBox[{
+       RowBox[{"#", "\[Rule]", 
+        RowBox[{"(", 
+         RowBox[{"#", "<>", "\"\<-\>\""}], ")"}]}], "&"}], "/@", 
+      "parameters"}]}], ";"}], "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{
+     RowBox[{"subNto", "[", "R", "]"}], " ", "=", " ", 
+     RowBox[{
+      RowBox[{
+       RowBox[{"#", "\[Rule]", 
+        RowBox[{"(", 
+         RowBox[{"#", "<>", "\"\<+\>\""}], ")"}]}], "&"}], "/@", 
+      "parameters"}]}], ";"}], "\n", "\[IndentingNewLine]", 
+   RowBox[{"(*", 
+    RowBox[{
+     RowBox[{"Incident", " ", "wave"}], ",", " ", 
+     RowBox[{
+     "chosen", " ", "to", " ", "be", " ", "able", " ", "to", " ", "represent",
+       " ", "any", " ", "plane", " ", "wave"}], ",", " ", 
+     RowBox[{
+      RowBox[{"i", ".", "e", ".", " ", "thermalwaves"}], " ", "or", " ", 
+      "shear", " ", "wave"}]}], "*)"}], "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"TWIn", " ", "=", " ", 
+     RowBox[{"<|", 
+      RowBox[{
+       RowBox[{"\"\<Name\>\"", "\[Rule]", " ", "\"\<Incident Wave\>\""}], ",", 
+       RowBox[{"\"\<rng\[Omega]\>\"", "\[Rule]", 
+        RowBox[{"{", "\[Omega]", "}"}]}], ",", 
+       RowBox[{"\"\<WaveNumbers\>\"", "\[Rule]", 
+        RowBox[{"{", 
+         RowBox[{"{", 
+          RowBox[{"k1", ",", "k2", ",", "k3"}], "}"}], "}"}]}], ",", 
+       RowBox[{"\"\<WaveVectors\>\"", "\[Rule]", " ", 
+        RowBox[{"{", 
+         RowBox[{"{", 
+          RowBox[{
+           RowBox[{"{", 
+            RowBox[{"V1", ",", "V2"}], "}"}], ",", 
+           RowBox[{"{", 
+            RowBox[{
+            "\[CapitalPsi]in1", ",", "\[CapitalPsi]in2", ",", 
+             "\[CapitalPsi]in3"}], "}"}]}], "}"}], "}"}]}], ",", 
+       RowBox[{"\"\<parameters\>\"", "->", 
+        RowBox[{"subNto", "[", "R", "]"}]}]}], "|>"}]}], ";"}], 
+   "\[IndentingNewLine]", "\[IndentingNewLine]", 
+   RowBox[{"(*", 
+    RowBox[{"Reflected", " ", "and", " ", "Transmitted", " ", "Waves"}], 
+    "*)"}], "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{
+     RowBox[{"TW\[Xi]", "[", "R_", "]"}], " ", ":=", " ", 
+     RowBox[{"<|", 
+      RowBox[{
+       RowBox[{"\"\<Name\>\"", "\[Rule]", " ", "\"\<\[Xi] Wave\>\""}], ",", 
+       RowBox[{"\"\<rng\[Omega]\>\"", "\[Rule]", 
+        RowBox[{"{", "\[Omega]", "}"}]}], ",", 
+       RowBox[{"\"\<WaveNumbers\>\"", "\[Rule]", 
+        RowBox[{"{", 
+         RowBox[{"{", 
+          RowBox[{"k1", ",", "k2", ",", 
+           RowBox[{"k\[Xi]", "[", "R", "]"}]}], "}"}], "}"}]}], ",", 
+       RowBox[{"\"\<WaveVectors\>\"", "\[Rule]", " ", 
+        RowBox[{"{", 
+         RowBox[{"{", 
+          RowBox[{
+           RowBox[{
+            RowBox[{"\[Xi]0", "[", "R", "]"}], 
+            RowBox[{"{", 
+             RowBox[{
+              RowBox[{"V", "[", 
+               RowBox[{"R", ",", "\[Xi]", ",", "\[Phi]"}], "]"}], ",", 
+              RowBox[{"V", "[", 
+               RowBox[{"R", ",", "\[Xi]", ",", "\[Theta]"}], "]"}]}], "}"}]}],
+            ",", 
+           RowBox[{"{", 
+            RowBox[{"0", ",", "0", ",", "0"}], "}"}]}], "}"}], "}"}]}], ",", 
+       RowBox[{"\"\<parameters\>\"", "\[Rule]", 
+        RowBox[{"subNto", "[", "R", "]"}]}]}], "|>"}]}], ";"}], 
+   "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{
+     RowBox[{"TW\[Zeta]", "[", "R_", "]"}], " ", ":=", " ", 
+     RowBox[{"<|", 
+      RowBox[{
+       RowBox[{"\"\<Name\>\"", "\[Rule]", " ", "\"\<\[Zeta] Wave\>\""}], ",", 
+       
+       RowBox[{"\"\<rng\[Omega]\>\"", "\[Rule]", 
+        RowBox[{"{", "\[Omega]", "}"}]}], ",", 
+       RowBox[{"\"\<WaveNumbers\>\"", "\[Rule]", 
+        RowBox[{"{", 
+         RowBox[{"{", 
+          RowBox[{"k1", ",", "k2", ",", 
+           RowBox[{"k\[Zeta]", "[", "R", "]"}]}], "}"}], "}"}]}], ",", 
+       RowBox[{"\"\<WaveVectors\>\"", "\[Rule]", " ", 
+        RowBox[{"{", 
+         RowBox[{"{", 
+          RowBox[{
+           RowBox[{
+            RowBox[{"\[Zeta]0", "[", "R", "]"}], 
+            RowBox[{"{", 
+             RowBox[{
+              RowBox[{"V", "[", 
+               RowBox[{"R", ",", "\[Zeta]", ",", "\[Phi]"}], "]"}], ",", 
+              RowBox[{"V", "[", 
+               RowBox[{"R", ",", "\[Zeta]", ",", "\[Theta]"}], "]"}]}], 
+             "}"}]}], ",", 
+           RowBox[{"{", 
+            RowBox[{"0", ",", "0", ",", "0"}], "}"}]}], "}"}], "}"}]}], ",", 
+       RowBox[{"\"\<parameters\>\"", "->", 
+        RowBox[{"subNto", "[", "R", "]"}]}]}], "|>"}]}], ";"}], 
+   "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{
+     RowBox[{"TW\[Psi]", "[", "R_", "]"}], " ", ":=", " ", 
+     RowBox[{"<|", 
+      RowBox[{
+       RowBox[{"\"\<Name\>\"", "\[Rule]", " ", "\"\<Shear Wave\>\""}], ",", 
+       RowBox[{"\"\<rng\[Omega]\>\"", "\[Rule]", 
+        RowBox[{"{", "\[Omega]", "}"}]}], ",", 
+       RowBox[{"\"\<WaveNumbers\>\"", "\[Rule]", 
+        RowBox[{"{", 
+         RowBox[{"{", 
+          RowBox[{"k1", ",", "k2", ",", 
+           RowBox[{"k\[Psi]", "[", "R", "]"}]}], "}"}], "}"}]}], ",", 
+       RowBox[{"\"\<WaveVectors\>\"", "\[Rule]", " ", 
+        RowBox[{"{", 
+         RowBox[{"{", 
+          RowBox[{
+           RowBox[{"{", 
+            RowBox[{"0", ",", "0"}], "}"}], ",", 
+           RowBox[{"{", 
+            RowBox[{
+             RowBox[{"\[CapitalPsi]1", "[", "R", "]"}], ",", 
+             RowBox[{"\[CapitalPsi]2", "[", "R", "]"}], ",", 
+             RowBox[{"\[CapitalPsi]3", "[", "R", "]"}]}], "}"}]}], "}"}], 
+         "}"}]}], ",", 
+       RowBox[{"\"\<parameters\>\"", "->", 
+        RowBox[{"subNto", "[", "R", "]"}]}]}], "|>"}]}], ";"}], "\n", 
+   "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"unknowns", " ", "=", " ", 
+     RowBox[{"{", 
+      RowBox[{
+       RowBox[{"\[Xi]0", "[", "R", "]"}], ",", 
+       RowBox[{"\[Zeta]0", "[", "R", "]"}], ",", 
+       RowBox[{"\[CapitalPsi]1", "[", "R", "]"}], ",", 
+       RowBox[{"\[CapitalPsi]2", "[", "R", "]"}], ",", 
+       RowBox[{"\[CapitalPsi]3", "[", "R", "]"}]}], "}"}]}], ";"}], 
+   "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"unknowns", " ", "=", " ", 
+     RowBox[{"unknowns", "~", "Join", "~", 
+      RowBox[{"(", 
+       RowBox[{"unknowns", "/.", 
+        RowBox[{"R", "\[Rule]", " ", "T"}]}], ")"}]}]}], ";"}], 
+   "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"listTWRs", " ", "=", " ", 
+     RowBox[{
+      RowBox[{
+       RowBox[{"{", 
+        RowBox[{
+         RowBox[{"TW\[Xi]", "@", "#"}], ",", 
+         RowBox[{"TW\[Zeta]", "@", "#"}], ",", 
+         RowBox[{"TW\[Psi]", "@", "#"}]}], "}"}], "&"}], "@", "R"}]}], ";"}], 
+   "\n", 
+   RowBox[{
+    RowBox[{"listTWTs", " ", "=", " ", 
+     RowBox[{
+      RowBox[{
+       RowBox[{"{", 
+        RowBox[{
+         RowBox[{"TW\[Xi]", "@", "#"}], ",", 
+         RowBox[{"TW\[Zeta]", "@", "#"}], ",", 
+         RowBox[{"TW\[Psi]", "@", "#"}]}], "}"}], "&"}], "@", "T"}]}], ";"}], 
+   "\[IndentingNewLine]", 
+   RowBox[{"(*", 
+    RowBox[{"Continuity", " ", "boundary", " ", "conditions"}], "*)"}], 
+   "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"uT", " ", "=", " ", 
+     RowBox[{"Plus", "@@", " ", 
+      RowBox[{"Map", "[", 
+       RowBox[{
+        RowBox[{
+         RowBox[{"DisplacementTW", "[", 
+          RowBox[{"#", ",", 
+           RowBox[{"{", 
+            RowBox[{"0", ",", "0", ",", "0"}], "}"}]}], "]"}], "&"}], ",", 
+        "listTWTs"}], "]"}]}]}], ";"}], "\n", 
+   RowBox[{
+    RowBox[{"uS", " ", "=", 
+     RowBox[{
+      RowBox[{"DisplacementTW", "[", " ", 
+       RowBox[{"TWIn", ",", " ", 
+        RowBox[{"{", 
+         RowBox[{"0", ",", "0", ",", 
+          RowBox[{"-", "\"\<height\>\""}]}], "}"}]}], "]"}], " ", "+", " ", 
+      RowBox[{"Plus", "@@", " ", 
+       RowBox[{"Map", "[", 
+        RowBox[{
+         RowBox[{
+          RowBox[{"DisplacementTW", "[", 
+           RowBox[{"#", ",", 
+            RowBox[{"{", 
+             RowBox[{"0", ",", "0", ",", "0"}], "}"}]}], "]"}], "&"}], ",", 
+         "listTWRs"}], "]"}]}]}]}], ";"}], "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"uS", " ", "=", " ", 
+     RowBox[{"uS", " ", "-", 
+      RowBox[{
+       RowBox[{"(", 
+        RowBox[{"1", "-", "\"\<ClampedBC\>\""}], ")"}], " ", "uT"}]}]}], 
+    ";"}], "\n", 
+   RowBox[{
+    RowBox[{"uS", " ", "=", " ", 
+     RowBox[{
+      RowBox[{"(", 
+       RowBox[{"1", "-", " ", "\"\<FreeBC\>\""}], ")"}], 
+      RowBox[{"uS", " ", "[", 
+       RowBox[{"[", "1", "]"}], "]"}]}]}], ";"}], "\n", 
+   RowBox[{
+    RowBox[{"equ", " ", "=", " ", 
+     RowBox[{
+      RowBox[{"Thread", "[", 
+       RowBox[{"uS", " ", "\[Equal]", "0"}], " ", "]"}], "~", "Join", "~", 
+      RowBox[{"Thread", "[", " ", 
+       RowBox[{
+        RowBox[{"\"\<ClampedBC\>\"", " ", 
+         RowBox[{"uT", "[", 
+          RowBox[{"[", "1", "]"}], "]"}]}], " ", "\[Equal]", " ", "0"}], 
+       "]"}]}]}], ";"}], "\[IndentingNewLine]", "\n", 
+   RowBox[{
+    RowBox[{"\[Sigma]T", " ", "=", "  ", 
+     RowBox[{"Plus", "@@", " ", 
+      RowBox[{"Map", "[", 
+       RowBox[{
+        RowBox[{
+         RowBox[{"StressTW", "[", 
+          RowBox[{"#", ",", 
+           RowBox[{"{", 
+            RowBox[{"0", ",", "0", ",", "0"}], "}"}]}], "]"}], "&"}], ",", 
+        "listTWTs"}], "]"}]}]}], ";"}], "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"\[Sigma]", " ", "=", " ", 
+     RowBox[{
+      RowBox[{"StressTW", "[", 
+       RowBox[{"TWIn", ",", 
+        RowBox[{"{", 
+         RowBox[{"0", ",", "0", ",", 
+          RowBox[{"-", "\"\<height\>\""}]}], "}"}]}], "]"}], " ", "+", " ", 
+      RowBox[{"Plus", "@@", " ", 
+       RowBox[{"Map", "[", 
+        RowBox[{
+         RowBox[{
+          RowBox[{"StressTW", "[", 
+           RowBox[{"#", ",", 
+            RowBox[{"{", 
+             RowBox[{"0", ",", "0", ",", "0"}], "}"}]}], "]"}], "&"}], ",", 
+         "listTWRs"}], "]"}]}]}]}], ";"}], "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"\[Sigma]", "=", " ", 
+     RowBox[{"\[Sigma]", " ", "-", " ", 
+      RowBox[{
+       RowBox[{"(", 
+        RowBox[{"1", "-", " ", "\"\<FreeBC\>\""}], ")"}], "\[Sigma]T"}]}]}], 
+    ";"}], "\n", 
+   RowBox[{
+    RowBox[{"\[Sigma]S", " ", "=", " ", 
+     RowBox[{
+      RowBox[{"\[Sigma]", "[", 
+       RowBox[{"[", "1", "]"}], "]"}], ".", 
+      RowBox[{"{", 
+       RowBox[{"0", ",", "0", ",", "1"}], "}"}]}]}], ";"}], 
+   "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"\[Sigma]S", "=", " ", 
+     RowBox[{
+      RowBox[{"(", 
+       RowBox[{"1", "-", "\"\<ClampedBC\>\""}], ")"}], "\[Sigma]S"}]}], ";"}],
+    "\n", 
+   RowBox[{
+    RowBox[{"eq\[Sigma]S", " ", "=", " ", 
+     RowBox[{
+      RowBox[{"Thread", "[", 
+       RowBox[{"\[Sigma]S", " ", "\[Equal]", "0"}], " ", "]"}], "~", "Join", 
+      "~", 
+      RowBox[{"Thread", "[", " ", 
+       RowBox[{
+        RowBox[{"\"\<FreeBC\>\"", 
+         RowBox[{"(", 
+          RowBox[{
+           RowBox[{"\[Sigma]T", "[", 
+            RowBox[{"[", "1", "]"}], "]"}], ".", 
+           RowBox[{"{", 
+            RowBox[{"0", ",", "0", ",", "1"}], "}"}]}], ")"}]}], " ", 
+        "\[Equal]", " ", "0"}], " ", "]"}]}]}], ";"}], "\n", 
+   "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"\[Theta]RS", " ", "=", 
+     RowBox[{
+      RowBox[{"\[Theta]TW", "[", " ", 
+       RowBox[{"TWIn", ",", " ", 
+        RowBox[{"{", 
+         RowBox[{"0", ",", "0", ",", 
+          RowBox[{"z", "-", "\"\<height\>\""}]}], "}"}]}], "]"}], " ", "+", 
+      " ", 
+      RowBox[{"Plus", "@@", 
+       RowBox[{"Map", "[", 
+        RowBox[{
+         RowBox[{
+          RowBox[{"\[Theta]TW", "[", 
+           RowBox[{"#", ",", 
+            RowBox[{"{", 
+             RowBox[{"0", ",", "0", ",", "z"}], "}"}]}], "]"}], "&"}], ",", 
+         "listTWRs"}], "]"}]}]}]}], ";"}], "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"\[Theta]TS", " ", "=", " ", 
+     RowBox[{"Plus", "@@", " ", 
+      RowBox[{"Map", "[", 
+       RowBox[{
+        RowBox[{
+         RowBox[{"\[Theta]TW", "[", 
+          RowBox[{"#", ",", 
+           RowBox[{"{", 
+            RowBox[{"0", ",", "0", ",", "z"}], "}"}]}], "]"}], "&"}], ",", 
+        "listTWTs"}], "]"}]}]}], ";"}], "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"D3\[Theta]S", " ", "=", 
+     RowBox[{
+      RowBox[{
+       RowBox[{"\"\<\[Kappa]+\>\"", " ", 
+        RowBox[{"D", "[", 
+         RowBox[{"\[Theta]RS", ",", "z"}], "]"}]}], " ", "-", " ", 
+       RowBox[{
+        RowBox[{"(", 
+         RowBox[{"1", " ", "-", " ", "\"\<NoHeatFluxBC\>\""}], ")"}], 
+        "\"\<\[Kappa]-\>\"", 
+        RowBox[{"D", "[", 
+         RowBox[{"\[Theta]TS", ",", "z"}], "]"}]}]}], "/.", 
+      RowBox[{"z", "\[Rule]", " ", "0"}]}]}], ";"}], "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"D3\[Theta]S", "=", " ", 
+     RowBox[{
+      RowBox[{"(", 
+       RowBox[{"1", " ", "-", "\"\<FixedTempBC\>\""}], " ", ")"}], 
+      RowBox[{"D3\[Theta]S", "[", 
+       RowBox[{"[", "1", "]"}], "]"}]}]}], ";"}], "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"eqD3\[Theta]S", " ", "=", " ", 
+     RowBox[{"{", 
+      RowBox[{
+       RowBox[{"D3\[Theta]S", " ", "\[Equal]", "0"}], ",", " ", 
+       RowBox[{
+        RowBox[{
+         RowBox[{"\"\<NoHeatFluxBC\>\"", 
+          RowBox[{"D", "[", 
+           RowBox[{"\[Theta]TS", ",", "z"}], "]"}]}], "\[Equal]", " ", "0"}], 
+        "/.", 
+        RowBox[{"z", "\[Rule]", "0"}]}]}], "}"}]}], ";"}], 
+   "\[IndentingNewLine]", "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"\[Theta]S", " ", "=", " ", 
+     RowBox[{
+      RowBox[{"\[Theta]RS", " ", "-", " ", 
+       RowBox[{
+        RowBox[{"(", 
+         RowBox[{"1", " ", "-", "  ", "\"\<FixedTempBC\>\""}], ")"}], 
+        "\[Theta]TS"}]}], "/.", 
+      RowBox[{"z", "\[Rule]", "0"}]}]}], ";"}], "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"\[Theta]S", " ", "=", " ", 
+     RowBox[{
+      RowBox[{"(", 
+       RowBox[{"1", " ", "-", " ", "\"\<NoHeatFluxBC\>\""}], ")"}], 
+      RowBox[{"\[Theta]S", "[", 
+       RowBox[{"[", "1", "]"}], "]"}]}]}], ";"}], "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"eq\[Theta]S", " ", "=", " ", 
+     RowBox[{"{", 
+      RowBox[{
+       RowBox[{"\[Theta]S", " ", "\[Equal]", "0"}], ",", " ", 
+       RowBox[{
+        RowBox[{
+         RowBox[{"\"\<FixedTempBC\>\"", 
+          RowBox[{"\[Theta]TS", "[", 
+           RowBox[{"[", "1", "]"}], "]"}]}], "\[Equal]", " ", "0"}], "/.", 
+        RowBox[{"z", "\[Rule]", "0"}]}]}], "}"}]}], ";"}], "\n", 
+   "\[IndentingNewLine]", 
+   RowBox[{"(*", 
+    RowBox[{
+    "constrain", " ", "the", " ", "shear", " ", "waves", " ", "to", " ", 
+     "have", " ", "zero", " ", "divergence"}], "*)"}], "\n", 
+   RowBox[{
+    RowBox[{"\[Psi]Constraint", " ", "=", 
+     RowBox[{
+      RowBox[{
+       RowBox[{"(", 
+        RowBox[{
+         RowBox[{
+          RowBox[{"(", " ", 
+           RowBox[{
+            RowBox[{"#", "[", "\"\<WaveNumbers\>\"", "]"}], "[", 
+            RowBox[{"[", "1", "]"}], "]"}], ")"}], ".", 
+          RowBox[{"(", 
+           RowBox[{
+            RowBox[{"#", "[", "\"\<WaveVectors\>\"", "]"}], "[", 
+            RowBox[{"[", 
+             RowBox[{"1", ",", "2"}], "]"}], "]"}], ")"}]}], "\[Equal]", 
+         "0"}], " ", ")"}], "&"}], " ", "/@", 
+      RowBox[{"{", 
+       RowBox[{
+        RowBox[{"TW\[Psi]", "[", "R", "]"}], ",", 
+        RowBox[{"TW\[Psi]", "[", "T", "]"}]}], "}"}]}]}], ";"}], 
+   "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"eqns", " ", "=", 
+     RowBox[{"Flatten", "@", 
+      RowBox[{"{", 
+       RowBox[{
+       "equ", ",", "eq\[Sigma]S", ",", "\[Psi]Constraint", ",", " ", 
+        "eq\[Theta]S", ",", "eqD3\[Theta]S"}], " ", "}"}]}]}], ";"}], 
+   "\[IndentingNewLine]", "\n", "\n", 
+   RowBox[{
+    RowBox[{
+     RowBox[{"kReflectF", "[", 
+      RowBox[{"ksqr_", ",", "KIn_", ",", "back_"}], "]"}], " ", ":=", " ", 
+     "\[IndentingNewLine]", 
+     RowBox[{
+      RowBox[{
+       RowBox[{"If", "[", "  ", 
+        RowBox[{
+         RowBox[{
+          RowBox[{"Abs", "@", 
+           RowBox[{"Re", "@", "#"}]}], " ", "\[GreaterEqual]", "  ", 
+          RowBox[{"Abs", "@", 
+           RowBox[{"Im", "@", "#"}]}]}], ",", "\[IndentingNewLine]", " ", 
+         RowBox[{"If", "[", " ", 
+          RowBox[{
+           RowBox[{
+            RowBox[{"Sign", "@", 
+             RowBox[{"Re", "[", "#", "]"}]}], "\[Equal]", " ", 
+            RowBox[{"back", " ", 
+             RowBox[{"Sign", "@", 
+              RowBox[{"(", 
+               RowBox[{
+                RowBox[{"Re", "@", 
+                 RowBox[{"KIn", "[", 
+                  RowBox[{"[", "3", "]"}], "]"}]}], "+", 
+                RowBox[{"Im", "@", 
+                 RowBox[{"KIn", "[", 
+                  RowBox[{"[", "3", "]"}], "]"}]}]}], " ", ")"}]}]}]}], " ", 
+           ",", "#", ",", 
+           RowBox[{"-", "#"}]}], " ", "]"}], "\[IndentingNewLine]", ",", 
+         "\[IndentingNewLine]", " ", 
+         RowBox[{"If", "[", " ", 
+          RowBox[{
+           RowBox[{
+            RowBox[{"Sign", "@", 
+             RowBox[{"Im", "[", "#", "]"}]}], "\[Equal]", " ", 
+            RowBox[{"back", " ", 
+             RowBox[{"Sign", "@", 
+              RowBox[{"(", 
+               RowBox[{
+                RowBox[{"Re", "@", 
+                 RowBox[{"KIn", "[", 
+                  RowBox[{"[", "3", "]"}], "]"}]}], "+", 
+                RowBox[{"Im", "@", 
+                 RowBox[{"KIn", "[", 
+                  RowBox[{"[", "3", "]"}], "]"}]}]}], " ", ")"}]}]}]}], ",", 
+           "#", ",", 
+           RowBox[{"-", "#"}]}], " ", "]"}]}], "\[IndentingNewLine]", "]"}], 
+       "&"}], "@", 
+      RowBox[{"Sqrt", "[", 
+       RowBox[{"ksqr", "-", 
+        SuperscriptBox[
+         RowBox[{"KIn", "[", 
+          RowBox[{"[", "1", "]"}], "]"}], "2"], "-", 
+        SuperscriptBox[
+         RowBox[{"KIn", "[", 
+          RowBox[{"[", "2", "]"}], "]"}], "2"]}], "]"}]}]}], ";"}], 
+   "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{
+     RowBox[{"ReflectedWaveNumbers", "[", 
+      RowBox[{"TWR_", ",", "TWin_", ",", 
+       RowBox[{"back_", ":", 
+        RowBox[{"(", 
+         RowBox[{"-", "1"}], ")"}]}]}], "]"}], ":=", 
+     RowBox[{"(", 
+      RowBox[{
+       RowBox[{
+        RowBox[{"{", 
+         RowBox[{
+          RowBox[{"#", "[", 
+           RowBox[{"[", 
+            RowBox[{"2", ",", "1"}], "]"}], "]"}], ",", 
+          RowBox[{"#", "[", 
+           RowBox[{"[", 
+            RowBox[{"2", ",", "2"}], "]"}], "]"}], ",", 
+          RowBox[{"kReflectF", "[", 
+           RowBox[{
+            RowBox[{"#", "[", 
+             RowBox[{"[", "1", "]"}], "]"}], ",", 
+            RowBox[{"#", "[", 
+             RowBox[{"[", "2", "]"}], "]"}], ",", "back"}], "]"}]}], "}"}], 
+        "&"}], "/@", 
+       RowBox[{"Transpose", "@", 
+        RowBox[{"{", 
+         RowBox[{
+          RowBox[{
+           RowBox[{
+            RowBox[{"#", ".", "#"}], "&"}], "/@", 
+           RowBox[{"TWR", "[", "\"\<WaveNumbers\>\"", "]"}]}], ",", " ", 
+          RowBox[{"TWin", "[", "\"\<WaveNumbers\>\"", "]"}]}], "}"}]}]}], 
+      ")"}]}], ";"}], "\[IndentingNewLine]", "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{
+     RowBox[{"Options", "[", "ScatteredTW", "]"}], "=", " ", 
+     RowBox[{"{", 
+      RowBox[{
+       RowBox[{"\"\<height\>\"", "\[Rule]", "0"}], ",", 
+       RowBox[{"\"\<ClampedBC\>\"", "\[Rule]", " ", "False"}], ",", " ", 
+       RowBox[{"\"\<FreeBC\>\"", " ", "\[Rule]", "False"}], ",", " ", 
+       RowBox[{"\"\<FixedTempBC\>\"", "\[Rule]", "False"}], ",", 
+       RowBox[{"\"\<NoHeatFluxBC\>\"", "\[Rule]", "False"}]}], "}"}]}], ";"}],
+    "\n", "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{
+     RowBox[{"ScatteredTW", "[", 
+      RowBox[{"TWin_", ",", "TWRs_", ",", "TWTs_", ",", 
+       RowBox[{"opts", ":", 
+        RowBox[{"OptionsPattern", "[", "]"}]}]}], "]"}], ":=", " ", 
+     "\[IndentingNewLine]", 
+     RowBox[{"Module", "[", 
+      RowBox[{
+       RowBox[{"{", 
+        RowBox[{"Neqns", ",", "options", ",", "sols", ",", 
+         RowBox[{"TWR\[Xi]", " ", "=", " ", 
+          RowBox[{"TWRs", "[", 
+           RowBox[{"[", "1", "]"}], "]"}]}], ",", 
+         RowBox[{"TWR\[Zeta]", " ", "=", " ", 
+          RowBox[{"TWRs", "[", 
+           RowBox[{"[", "2", "]"}], "]"}]}], ",", 
+         RowBox[{"TWR\[Psi]", " ", "=", " ", 
+          RowBox[{"TWRs", "[", 
+           RowBox[{"[", "3", "]"}], "]"}]}], ",", 
+         RowBox[{"TWT\[Xi]", " ", "=", " ", 
+          RowBox[{"TWTs", "[", 
+           RowBox[{"[", "1", "]"}], "]"}]}], ",", 
+         RowBox[{"TWT\[Zeta]", " ", "=", " ", 
+          RowBox[{"TWTs", "[", 
+           RowBox[{"[", "2", "]"}], "]"}]}], ",", 
+         RowBox[{"TWT\[Psi]", " ", "=", " ", 
+          RowBox[{"TWTs", "[", 
+           RowBox[{"[", "3", "]"}], "]"}]}]}], "}"}], ",", 
+       "\[IndentingNewLine]", 
+       RowBox[{"(*", 
+        RowBox[{
+        "If", " ", "some", " ", "options", " ", "were", " ", "not", " ", 
+         "specified", " ", "then", " ", "add", " ", "default", " ", "options",
+          " ", "to", " ", "opts"}], "*)"}], "\[IndentingNewLine]", 
+       RowBox[{
+        RowBox[{"options", "=", " ", 
+         RowBox[{
+          RowBox[{
+           RowBox[{"Thread", "[", 
+            RowBox[{"Rule", "[", 
+             RowBox[{"#", ",", 
+              RowBox[{"#", "/.", 
+               RowBox[{"Options", "[", "ScatteredTW", "]"}]}]}], "]"}], "]"}],
+            "&"}], "@", 
+          RowBox[{"(", 
+           RowBox[{"Complement", "@@", 
+            RowBox[{"Map", "[", 
+             RowBox[{
+              RowBox[{
+               RowBox[{
+                RowBox[{
+                 RowBox[{"(", 
+                  RowBox[{"#", "/.", 
+                   RowBox[{"Rule", "\[Rule]", "List"}]}], ")"}], 
+                 "\[Transpose]"}], "[", 
+                RowBox[{"[", "1", "]"}], "]"}], "&"}], ",", 
+              RowBox[{"{", 
+               RowBox[{
+                RowBox[{"Options", "[", "ScatteredTW", "]"}], ",", "opts"}], 
+               "}"}]}], "]"}]}], ")"}]}]}], ";", "\[IndentingNewLine]", 
+        RowBox[{"options", "=", 
+         RowBox[{
+          RowBox[{"opts", "~", "Join", "~", "options"}], "/.", 
+          RowBox[{"{", 
+           RowBox[{
+            RowBox[{"True", "\[Rule]", "1"}], ",", 
+            RowBox[{"False", "\[Rule]", "0"}]}], "}"}]}]}], ";", 
+        "\[IndentingNewLine]", "\[IndentingNewLine]", 
+        RowBox[{"Neqns", " ", "=", " ", 
+         RowBox[{
+          RowBox[{
+           RowBox[{"eqns", "/.", "options"}], "/.", 
+           RowBox[{"(", 
+            RowBox[{
+             RowBox[{"TWin", "[", "\"\<parameters\>\"", "]"}], "/.", 
+             RowBox[{"subNto", "[", "R", "]"}]}], ")"}]}], " ", "/.", 
+          RowBox[{"(", 
+           RowBox[{
+            RowBox[{"TWT\[Xi]", "[", "\"\<parameters\>\"", "]"}], "/.", 
+            RowBox[{"subNto", "[", "T", "]"}]}], ")"}]}]}], ";", 
+        "\[IndentingNewLine]", "\[IndentingNewLine]", " ", 
+        RowBox[{
+         RowBox[{"TWR\[Xi]", "[", "\"\<WaveNumbers\>\"", "]"}], "=", 
+         RowBox[{"ReflectedWaveNumbers", "[", 
+          RowBox[{"TWR\[Xi]", ",", "TWin"}], "]"}]}], ";", 
+        "\[IndentingNewLine]", " ", 
+        RowBox[{
+         RowBox[{"TWR\[Zeta]", "[", "\"\<WaveNumbers\>\"", "]"}], "=", 
+         RowBox[{"ReflectedWaveNumbers", "[", 
+          RowBox[{"TWR\[Zeta]", ",", "TWin"}], "]"}]}], ";", 
+        "\[IndentingNewLine]", " ", 
+        RowBox[{
+         RowBox[{"TWR\[Psi]", "[", "\"\<WaveNumbers\>\"", "]"}], "=", 
+         RowBox[{"ReflectedWaveNumbers", "[", 
+          RowBox[{"TWR\[Psi]", ",", "TWin"}], "]"}]}], ";", 
+        "\[IndentingNewLine]", " ", 
+        RowBox[{
+         RowBox[{"TWT\[Xi]", "[", "\"\<WaveNumbers\>\"", "]"}], "=", 
+         RowBox[{"ReflectedWaveNumbers", "[", 
+          RowBox[{"TWT\[Xi]", ",", "TWin", ",", "1"}], "]"}]}], ";", 
+        "\[IndentingNewLine]", " ", 
+        RowBox[{
+         RowBox[{"TWT\[Zeta]", "[", "\"\<WaveNumbers\>\"", "]"}], "=", 
+         RowBox[{"ReflectedWaveNumbers", "[", 
+          RowBox[{"TWT\[Zeta]", ",", "TWin", ",", "1"}], "]"}]}], ";", 
+        "\[IndentingNewLine]", " ", 
+        RowBox[{
+         RowBox[{"TWT\[Psi]", "[", "\"\<WaveNumbers\>\"", "]"}], "=", 
+         RowBox[{"ReflectedWaveNumbers", "[", 
+          RowBox[{"TWT\[Psi]", ",", "TWin", ",", "1"}], "]"}]}], ";", 
+        "\[IndentingNewLine]", "\[IndentingNewLine]", 
+        RowBox[{
+         RowBox[{"BCeqnsF", "[", 
+          RowBox[{"{", 
+           RowBox[{
+           "\[Omega]1_", ",", "KIn_List", ",", "VIns_List", " ", ",", 
+            "kRs_List", ",", "VR\[Xi]_List", ",", "VR\[Zeta]_List", ",", 
+            "kTs_List", ",", "VT\[Xi]_List", ",", "VT\[Zeta]_List"}], "}"}], 
+          "]"}], " ", ":=", " ", "\[IndentingNewLine]", 
+         RowBox[{"Neqns", "/.", 
+          RowBox[{"Flatten", "@", 
+           RowBox[{"{", 
+            RowBox[{
+             RowBox[{"\[Omega]", "\[Rule]", " ", "\[Omega]1"}], ",", 
+             "\[IndentingNewLine]", " ", 
+             RowBox[{"Thread", "[", 
+              RowBox[{
+               RowBox[{"{", 
+                RowBox[{
+                 RowBox[{"V", "[", 
+                  RowBox[{"R", ",", "\[Xi]", ",", "\[Phi]"}], "]"}], ",", 
+                 RowBox[{"V", "[", 
+                  RowBox[{"R", ",", "\[Xi]", ",", "\[Theta]"}], "]"}], ",", 
+                 RowBox[{"V", "[", 
+                  RowBox[{"R", ",", "\[Zeta]", ",", "\[Phi]"}], "]"}], ",", 
+                 RowBox[{"V", "[", 
+                  RowBox[{"R", ",", "\[Zeta]", ",", "\[Theta]"}], "]"}]}], 
+                "}"}], " ", "->", " ", 
+               RowBox[{"Flatten", "@", 
+                RowBox[{"{", 
+                 RowBox[{"VR\[Xi]", ",", "VR\[Zeta]"}], "}"}]}]}], "]"}], ",",
+              "\[IndentingNewLine]", " ", 
+             RowBox[{"Thread", "[", 
+              RowBox[{
+               RowBox[{"{", 
+                RowBox[{
+                 RowBox[{"V", "[", 
+                  RowBox[{"T", ",", "\[Xi]", ",", "\[Phi]"}], "]"}], ",", 
+                 RowBox[{"V", "[", 
+                  RowBox[{"T", ",", "\[Xi]", ",", "\[Theta]"}], "]"}], ",", 
+                 RowBox[{"V", "[", 
+                  RowBox[{"T", ",", "\[Zeta]", ",", "\[Phi]"}], "]"}], ",", 
+                 RowBox[{"V", "[", 
+                  RowBox[{"T", ",", "\[Zeta]", ",", "\[Theta]"}], "]"}]}], 
+                "}"}], " ", "->", " ", 
+               RowBox[{"Flatten", "@", 
+                RowBox[{"{", 
+                 RowBox[{"VT\[Xi]", ",", "VT\[Zeta]"}], "}"}]}]}], "]"}], ",",
+              "\[IndentingNewLine]", " ", 
+             RowBox[{"Thread", "[", 
+              RowBox[{
+               RowBox[{"{", 
+                RowBox[{
+                 RowBox[{"k\[Xi]", "[", "R", "]"}], ",", 
+                 RowBox[{"k\[Zeta]", "[", "R", "]"}], ",", 
+                 RowBox[{"k\[Psi]", "[", "R", "]"}]}], "}"}], " ", "\[Rule]", 
+               "kRs"}], "]"}], ",", "\[IndentingNewLine]", " ", 
+             RowBox[{"Thread", "[", 
+              RowBox[{
+               RowBox[{"{", 
+                RowBox[{
+                 RowBox[{"k\[Xi]", "[", "T", "]"}], ",", 
+                 RowBox[{"k\[Zeta]", "[", "T", "]"}], ",", 
+                 RowBox[{"k\[Psi]", "[", "T", "]"}]}], "}"}], " ", "\[Rule]", 
+               "kTs"}], "]"}], ",", "\[IndentingNewLine]", " ", 
+             RowBox[{"Thread", "[", 
+              RowBox[{
+               RowBox[{"{", 
+                RowBox[{"k1", ",", "k2", ",", "k3"}], "}"}], " ", "\[Rule]", 
+               " ", "KIn"}], "]"}], ",", "\[IndentingNewLine]", " ", 
+             RowBox[{"Thread", "[", 
+              RowBox[{
+               RowBox[{"{", 
+                RowBox[{
+                "V1", ",", "V2", ",", "\[CapitalPsi]in1", ",", 
+                 "\[CapitalPsi]in2", ",", "\[CapitalPsi]in3"}], "}"}], "->", 
+               RowBox[{"Flatten", "@", "VIns"}]}], "]"}]}], 
+            "\[IndentingNewLine]", "}"}]}]}]}], ";", "\[IndentingNewLine]", 
+        RowBox[{"sols", " ", "=", 
+         RowBox[{
+          RowBox[{
+           RowBox[{"(", 
+            RowBox[{
+             RowBox[{"{", 
+              RowBox[{
+               RowBox[{"\[Xi]0", "[", "R", "]"}], ",", 
+               RowBox[{"\[Zeta]0", "[", "R", "]"}], ",", 
+               RowBox[{"{", 
+                RowBox[{
+                 RowBox[{"\[CapitalPsi]1", "[", "R", "]"}], ",", 
+                 RowBox[{"\[CapitalPsi]2", "[", "R", "]"}], ",", 
+                 RowBox[{"\[CapitalPsi]3", "[", "R", "]"}]}], "}"}], ",", 
+               RowBox[{"\[Xi]0", "[", "T", "]"}], ",", 
+               RowBox[{"\[Zeta]0", "[", "T", "]"}], ",", 
+               RowBox[{"{", 
+                RowBox[{
+                 RowBox[{"\[CapitalPsi]1", "[", "T", "]"}], ",", 
+                 RowBox[{"\[CapitalPsi]2", "[", "T", "]"}], ",", 
+                 RowBox[{"\[CapitalPsi]3", "[", "T", "]"}]}], "}"}]}], "}"}], 
+             "/.", 
+             RowBox[{"Flatten", "@", 
+              RowBox[{"NSolve", "[", 
+               RowBox[{
+                RowBox[{"BCeqnsF", "[", "#", "]"}], ",", 
+                RowBox[{"Method", "\[Rule]", 
+                 RowBox[{"{", 
+                  RowBox[{
+                  "\"\<UseSlicingHyperplanes\>\"", "\[Rule]", "False"}], 
+                  "}"}]}], ",", 
+                RowBox[{"WorkingPrecision", "\[Rule]", " ", 
+                 RowBox[{
+                  RowBox[{"Precision", "[", 
+                   RowBox[{"TWin", "[", "\"\<parameters\>\"", "]"}], "]"}], 
+                  "-", "1"}]}]}], "]"}]}]}], ")"}], "&"}], "/@", 
+          RowBox[{"Transpose", "@", 
+           RowBox[{"{", 
+            RowBox[{
+             RowBox[{"TWin", "[", "\"\<rng\[Omega]\>\"", "]"}], ",", 
+             RowBox[{"TWin", "[", "\"\<WaveNumbers\>\"", "]"}], ",", 
+             RowBox[{"TWin", "[", "\"\<WaveVectors\>\"", "]"}], ",", 
+             RowBox[{"Transpose", "[", 
+              RowBox[{
+               RowBox[{
+                RowBox[{
+                 RowBox[{
+                  RowBox[{"#", "[", 
+                   RowBox[{"[", "3", "]"}], "]"}], "&"}], "/@", 
+                 RowBox[{"#", "[", "\"\<WaveNumbers\>\"", "]"}]}], "&"}], "/@", 
+               RowBox[{"{", 
+                RowBox[{"TWR\[Xi]", ",", "TWR\[Zeta]", ",", "TWR\[Psi]"}], 
+                "}"}]}], "]"}], ",", 
+             RowBox[{
+              RowBox[{
+               RowBox[{"TWR\[Xi]", "[", "\"\<WaveVectors\>\"", "]"}], 
+               "\[Transpose]"}], "[", 
+              RowBox[{"[", "1", "]"}], "]"}], ",", 
+             RowBox[{
+              RowBox[{
+               RowBox[{"TWR\[Zeta]", "[", "\"\<WaveVectors\>\"", "]"}], 
+               "\[Transpose]"}], "[", 
+              RowBox[{"[", "1", "]"}], "]"}], ",", 
+             RowBox[{"Transpose", "[", 
+              RowBox[{
+               RowBox[{
+                RowBox[{
+                 RowBox[{
+                  RowBox[{"#", "[", 
+                   RowBox[{"[", "3", "]"}], "]"}], "&"}], "/@", 
+                 RowBox[{"#", "[", "\"\<WaveNumbers\>\"", "]"}]}], "&"}], "/@", 
+               RowBox[{"{", 
+                RowBox[{"TWT\[Xi]", ",", "TWT\[Zeta]", ",", "TWT\[Psi]"}], 
+                "}"}]}], "]"}], ",", 
+             RowBox[{
+              RowBox[{
+               RowBox[{"TWT\[Xi]", "[", "\"\<WaveVectors\>\"", "]"}], 
+               "\[Transpose]"}], "[", 
+              RowBox[{"[", "1", "]"}], "]"}], ",", 
+             RowBox[{
+              RowBox[{
+               RowBox[{"TWT\[Zeta]", "[", "\"\<WaveVectors\>\"", "]"}], 
+               "\[Transpose]"}], "[", 
+              RowBox[{"[", "1", "]"}], "]"}]}], "}"}]}]}]}], ";", 
+        "\[IndentingNewLine]", 
+        RowBox[{"(*", 
+         RowBox[{
+         "any", " ", "symbols", " ", "that", " ", "were", " ", "not", " ", 
+          "determined", " ", "should", " ", "be", " ", "zero"}], "*)"}], 
+        "\[IndentingNewLine]", 
+        RowBox[{"sols", " ", "=", 
+         RowBox[{
+          RowBox[{"Transpose", "@", "sols"}], "/.", 
+          RowBox[{
+           RowBox[{
+            RowBox[{"_", "?", 
+             RowBox[{"(", 
+              RowBox[{
+               RowBox[{
+                RowBox[{"#", "\[Equal]", "\[Xi]0"}], "||", 
+                RowBox[{"#", "\[Equal]", "\[Zeta]0"}], "||", 
+                RowBox[{"#", "\[Equal]", "\[CapitalPsi]1"}], "||", 
+                RowBox[{"#", "\[Equal]", "\[CapitalPsi]2"}], "||", 
+                RowBox[{"#", "\[Equal]", "\[CapitalPsi]3"}]}], " ", "&"}], 
+              ")"}]}], "[", "__", "]"}], "\[Rule]", " ", "0"}]}]}], ";", 
+        "\[IndentingNewLine]", "\[IndentingNewLine]", 
+        RowBox[{"(*", 
+         RowBox[{
+          RowBox[{"sols", " ", "=", 
+           RowBox[{"Transpose", "@", "sols"}]}], ";"}], "*)"}], 
+        "\[IndentingNewLine]", 
+        RowBox[{
+         RowBox[{"TWR\[Xi]", "[", "\"\<WaveVectors\>\"", "]"}], " ", "=", " ", 
+         RowBox[{
+          RowBox[{"TWR\[Xi]", "[", "\"\<WaveVectors\>\"", "]"}], 
+          RowBox[{"sols", " ", "[", 
+           RowBox[{"[", "1", "]"}], "]"}]}]}], ";", "\[IndentingNewLine]", 
+        RowBox[{
+         RowBox[{"TWR\[Zeta]", "[", "\"\<WaveVectors\>\"", "]"}], " ", "=", 
+         " ", 
+         RowBox[{
+          RowBox[{"TWR\[Zeta]", "[", "\"\<WaveVectors\>\"", "]"}], " ", 
+          RowBox[{"sols", "[", 
+           RowBox[{"[", "2", "]"}], "]"}]}]}], ";", "\[IndentingNewLine]", 
+        RowBox[{
+         RowBox[{"TWR\[Psi]", "[", "\"\<WaveVectors\>\"", "]"}], " ", "=", 
+         " ", 
+         RowBox[{
+          RowBox[{
+           RowBox[{"{", 
+            RowBox[{
+             RowBox[{"{", 
+              RowBox[{"0", ",", "0"}], "}"}], ",", "#"}], "}"}], "&"}], "/@", 
+          " ", 
+          RowBox[{"sols", " ", "[", 
+           RowBox[{"[", "3", "]"}], "]"}]}]}], ";", "\[IndentingNewLine]", 
+        "\[IndentingNewLine]", 
+        RowBox[{
+         RowBox[{"TWT\[Xi]", "[", "\"\<WaveVectors\>\"", "]"}], " ", "=", " ", 
+         RowBox[{
+          RowBox[{"TWT\[Xi]", "[", "\"\<WaveVectors\>\"", "]"}], 
+          RowBox[{"sols", " ", "[", 
+           RowBox[{"[", "4", "]"}], "]"}]}]}], ";", "\[IndentingNewLine]", 
+        RowBox[{
+         RowBox[{"TWT\[Zeta]", "[", "\"\<WaveVectors\>\"", "]"}], " ", "=", 
+         " ", 
+         RowBox[{
+          RowBox[{"TWT\[Zeta]", "[", "\"\<WaveVectors\>\"", "]"}], " ", 
+          RowBox[{"sols", "[", 
+           RowBox[{"[", "5", "]"}], "]"}]}]}], ";", "\[IndentingNewLine]", 
+        RowBox[{
+         RowBox[{"TWT\[Psi]", "[", "\"\<WaveVectors\>\"", "]"}], " ", "=", 
+         " ", 
+         RowBox[{
+          RowBox[{
+           RowBox[{"{", 
+            RowBox[{
+             RowBox[{"{", 
+              RowBox[{"0", ",", "0"}], "}"}], ",", "#"}], "}"}], "&"}], "/@", 
+          " ", 
+          RowBox[{"sols", " ", "[", 
+           RowBox[{"[", "6", "]"}], "]"}]}]}], ";", "\[IndentingNewLine]", 
+        RowBox[{"Return", "@", 
+         RowBox[{"{", 
+          RowBox[{
+           RowBox[{"{", 
+            RowBox[{"TWR\[Xi]", ",", "TWR\[Zeta]", ",", "TWR\[Psi]"}], "}"}], 
+           ",", 
+           RowBox[{"{", 
+            RowBox[{"TWT\[Xi]", ",", "TWT\[Zeta]", ",", "TWT\[Psi]"}], 
+            "}"}]}], "}"}]}]}]}], "\[IndentingNewLine]", "]"}]}], ";"}], 
+   "\[IndentingNewLine]", "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{
+     RowBox[{"PlotBCTW", "[", 
+      RowBox[{"TWin_", ",", "TWRs_", ",", "TWTs_", ",", 
+       RowBox[{"opts", ":", 
+        RowBox[{"OptionsPattern", "[", "]"}]}]}], "]"}], ":=", " ", 
+     "\[IndentingNewLine]", 
+     RowBox[{"Module", "[", 
+      RowBox[{
+       RowBox[{"{", 
+        RowBox[{
+         RowBox[{"rng\[Omega]", " ", "=", " ", 
+          RowBox[{"TWin", "[", "\"\<rng\[Omega]\>\"", "]"}]}], ",", 
+         RowBox[{"norm", "=", "0.0"}], ",", " ", "pu", ",", " ", "p\[Sigma]", 
+         ",", "p\[Theta]", ",", "p\[CapitalDelta]\[Theta]"}], "}"}], ",", 
+       "\[IndentingNewLine]", "\[IndentingNewLine]", 
+       RowBox[{
+        RowBox[{"norm", " ", "=", " ", 
+         RowBox[{"Norm", "/@", " ", 
+          RowBox[{"(", 
+           RowBox[{
+            RowBox[{"DisplacementTW", "[", 
+             RowBox[{"TWin", ",", 
+              RowBox[{"{", 
+               RowBox[{"0", ",", "0", ",", 
+                RowBox[{
+                 RowBox[{"-", "\"\<height\>\""}], "/.", "opts"}]}], "}"}]}], 
+             "]"}], "+", " ", 
+            RowBox[{"Plus", "@@", 
+             RowBox[{"(", 
+              RowBox[{
+               RowBox[{
+                RowBox[{"DisplacementTW", "[", 
+                 RowBox[{"#", ",", 
+                  RowBox[{"{", 
+                   RowBox[{"0", ",", "0", ",", "0"}], "}"}]}], "]"}], "&"}], "/@",
+                "TWRs"}], ")"}]}], "-", 
+            RowBox[{"Plus", "@@", 
+             RowBox[{"(", 
+              RowBox[{
+               RowBox[{
+                RowBox[{"DisplacementTW", "[", 
+                 RowBox[{"#", ",", 
+                  RowBox[{"{", 
+                   RowBox[{"0", ",", "0", ",", "0"}], "}"}]}], "]"}], "&"}], "/@",
+                "TWTs"}], ")"}]}]}], ")"}]}]}], ";", "\[IndentingNewLine]", 
+        RowBox[{"norm", " ", "/=", "  ", 
+         RowBox[{"Norm", " ", "/@", 
+          RowBox[{"DisplacementTW", "[", 
+           RowBox[{
+            RowBox[{"TWs", "[", 
+             RowBox[{"[", "1", "]"}], "]"}], ",", 
+            RowBox[{"{", 
+             RowBox[{"0", ",", "0", ",", 
+              RowBox[{
+               RowBox[{"-", "\"\<height\>\""}], "/.", "opts"}]}], "}"}]}], 
+           "]"}]}]}], ";", "\[IndentingNewLine]", 
+        RowBox[{"pu", "=", 
+         RowBox[{"ListPlot", "[", 
+          RowBox[{
+           RowBox[{
+            RowBox[{"{", 
+             RowBox[{"rng\[Omega]", ",", "norm"}], "}"}], "\[Transpose]"}], 
+           ",", 
+           RowBox[{"PlotStyle", "\[Rule]", " ", 
+            RowBox[{"{", "Thick", "}"}]}], ",", " ", 
+           RowBox[{"AxesLabel", "\[Rule]", " ", 
+            RowBox[{"{", 
+             RowBox[{"\"\<\[Omega]\>\"", ",", "\"\<u\>\""}], "}"}]}], ",", 
+           RowBox[{
+           "PlotLabel", "\[Rule]", " ", 
+            "\"\<Displacement on boundary\>\""}]}], "]"}]}], ";", 
+        "\[IndentingNewLine]", "\[IndentingNewLine]", 
+        RowBox[{"norm", " ", "=", 
+         RowBox[{"Norm", "/@", 
+          RowBox[{"(", " ", 
+           RowBox[{
+            RowBox[{
+             RowBox[{"StressTW", "[", 
+              RowBox[{"TWin", ",", 
+               RowBox[{"{", 
+                RowBox[{"0", ",", "0", ",", 
+                 RowBox[{
+                  RowBox[{"-", "\"\<height\>\""}], "/.", "opts"}]}], "}"}]}], 
+              "]"}], ".", 
+             RowBox[{"{", 
+              RowBox[{"0", ",", "0", ",", "1"}], "}"}]}], "+", " ", 
+            RowBox[{"Plus", "@@", 
+             RowBox[{"(", 
+              RowBox[{
+               RowBox[{
+                RowBox[{
+                 RowBox[{"StressTW", "[", 
+                  RowBox[{"#", ",", 
+                   RowBox[{"{", 
+                    RowBox[{"0", ",", "0", ",", "0"}], "}"}]}], "]"}], ".", 
+                 RowBox[{"{", 
+                  RowBox[{"0", ",", "0", ",", "1"}], "}"}]}], "&"}], "/@", 
+               "TWRs"}], ")"}]}], "-", 
+            RowBox[{"Plus", "@@", 
+             RowBox[{"(", 
+              RowBox[{
+               RowBox[{
+                RowBox[{
+                 RowBox[{"StressTW", "[", 
+                  RowBox[{"#", ",", 
+                   RowBox[{"{", 
+                    RowBox[{"0", ",", "0", ",", "0"}], "}"}]}], "]"}], ".", 
+                 RowBox[{"{", 
+                  RowBox[{"0", ",", "0", ",", "1"}], "}"}]}], "&"}], "/@", 
+               "TWTs"}], ")"}]}]}], ")"}]}]}], ";", "\[IndentingNewLine]", 
+        RowBox[{"norm", " ", "/=", 
+         RowBox[{"Norm", " ", "/@", 
+          RowBox[{"(", " ", 
+           RowBox[{
+            RowBox[{"StressTW", "[", 
+             RowBox[{"TWin", ",", 
+              RowBox[{"{", 
+               RowBox[{"0", ",", "0", ",", 
+                RowBox[{
+                 RowBox[{"-", "\"\<height\>\""}], "/.", "opts"}]}], "}"}]}], 
+             "]"}], ".", 
+            RowBox[{"{", 
+             RowBox[{"0", ",", "0", ",", "1"}], "}"}]}], ")"}]}]}], ";", 
+        "\[IndentingNewLine]", 
+        RowBox[{"p\[Sigma]", "=", 
+         RowBox[{"ListPlot", "[", 
+          RowBox[{
+           RowBox[{
+            RowBox[{"{", 
+             RowBox[{"rng\[Omega]", ",", "norm"}], "}"}], "\[Transpose]"}], 
+           ",", 
+           RowBox[{"PlotStyle", "\[Rule]", " ", 
+            RowBox[{"{", 
+             RowBox[{"Thick", ",", "Green"}], "}"}]}], ",", " ", 
+           RowBox[{"AxesLabel", "\[Rule]", " ", 
+            RowBox[{"{", 
+             RowBox[{"\"\<\[Omega]\>\"", ",", "\"\<\[Sigma].n\>\""}], "}"}]}],
+            ",", 
+           RowBox[{
+           "PlotLabel", "\[Rule]", " ", "\"\<Stress on boundary\>\""}]}], 
+          "]"}]}], ";", "\[IndentingNewLine]", "\n", "       ", 
+        RowBox[{"norm", " ", "=", 
+         RowBox[{"Norm", "/@", 
+          RowBox[{"(", 
+           RowBox[{
+            RowBox[{"\[Theta]TW", "[", 
+             RowBox[{"TWin", ",", 
+              RowBox[{"{", 
+               RowBox[{"0", ",", "0", ",", 
+                RowBox[{
+                 RowBox[{"-", "\"\<height\>\""}], "/.", "opts"}]}], "}"}]}], 
+             "]"}], " ", "+", " ", 
+            RowBox[{"Plus", "@@", 
+             RowBox[{"Map", "[", 
+              RowBox[{
+               RowBox[{
+                RowBox[{"\[Theta]TW", "[", 
+                 RowBox[{"#", ",", 
+                  RowBox[{"{", 
+                   RowBox[{"0", ",", "0", ",", "0"}], "}"}]}], "]"}], "&"}], 
+               ",", "TWRs"}], "]"}]}], "-", " ", 
+            RowBox[{"Plus", "@@", 
+             RowBox[{"Map", "[", 
+              RowBox[{
+               RowBox[{
+                RowBox[{"\[Theta]TW", "[", 
+                 RowBox[{"#", ",", 
+                  RowBox[{"{", 
+                   RowBox[{"0", ",", "0", ",", "0"}], "}"}]}], "]"}], "&"}], 
+               ",", "TWTs"}], "]"}]}]}], ")"}]}]}], ";", 
+        "\[IndentingNewLine]", 
+        RowBox[{"norm", " ", "/=", 
+         RowBox[{"Norm", "/@", 
+          RowBox[{"\[Theta]TW", "[", 
+           RowBox[{"TWin", ",", 
+            RowBox[{"{", 
+             RowBox[{"0", ",", "0", ",", 
+              RowBox[{
+               RowBox[{"-", "\"\<height\>\""}], "/.", "opts"}]}], "}"}]}], 
+           "]"}]}]}], " ", ";", "\[IndentingNewLine]", 
+        RowBox[{"p\[Theta]", "=", 
+         RowBox[{"ListPlot", "[", 
+          RowBox[{
+           RowBox[{
+            RowBox[{"{", 
+             RowBox[{"rng\[Omega]", ",", "norm"}], "}"}], "\[Transpose]"}], 
+           ",", 
+           RowBox[{"PlotStyle", "\[Rule]", " ", 
+            RowBox[{"{", 
+             RowBox[{"Thick", ",", "Purple"}], "}"}]}], ",", " ", 
+           RowBox[{"AxesLabel", "\[Rule]", " ", 
+            RowBox[{"{", 
+             RowBox[{"\"\<\[Omega]\>\"", ",", "\"\<\[Theta]\>\""}], "}"}]}], 
+           ",", 
+           RowBox[{
+           "PlotLabel", "\[Rule]", " ", "\"\<Temperature on boundary\>\""}]}],
+           "]"}]}], ";", "\[IndentingNewLine]", "\[IndentingNewLine]", 
+        RowBox[{"norm", " ", "=", 
+         RowBox[{"Norm", "/@", 
+          RowBox[{"(", 
+           RowBox[{
+            RowBox[{
+             RowBox[{"D", "[", 
+              RowBox[{
+               RowBox[{
+                RowBox[{
+                 RowBox[{"\[Theta]TW", "[", 
+                  RowBox[{"TWin", ",", 
+                   RowBox[{"{", 
+                    RowBox[{"0", ",", "0", ",", 
+                    RowBox[{
+                    RowBox[{"z", "-", "\"\<height\>\""}], "/.", "opts"}]}], 
+                    "}"}]}], "]"}], " ", "\"\<\[Kappa]\>\""}], "/.", 
+                RowBox[{"TWin", "[", "\"\<parameters\>\"", "]"}]}], ",", 
+               "z"}], "]"}], "  ", "+", " ", 
+             RowBox[{"Plus", "@@", 
+              RowBox[{"Map", "[", 
+               RowBox[{
+                RowBox[{
+                 RowBox[{
+                  RowBox[{"(", 
+                   RowBox[{"\"\<\[Kappa]\>\"", "/.", 
+                    RowBox[{"#", "[", "\"\<parameters\>\"", "]"}]}], ")"}], 
+                  RowBox[{"D", "[", 
+                   RowBox[{
+                    RowBox[{"\[Theta]TW", "[", 
+                    RowBox[{"#", ",", 
+                    RowBox[{"{", 
+                    RowBox[{"0", ",", "0", ",", "z"}], "}"}]}], "]"}], ",", 
+                    "z"}], "]"}]}], "&"}], ",", "TWRs"}], "]"}]}], " ", "-", 
+             "  ", 
+             RowBox[{"Plus", "@@", 
+              RowBox[{"Map", "[", 
+               RowBox[{
+                RowBox[{
+                 RowBox[{
+                  RowBox[{"(", 
+                   RowBox[{"\"\<\[Kappa]\>\"", "/.", 
+                    RowBox[{"#", "[", "\"\<parameters\>\"", "]"}]}], ")"}], 
+                  RowBox[{"D", "[", 
+                   RowBox[{
+                    RowBox[{"\[Theta]TW", "[", 
+                    RowBox[{"#", ",", 
+                    RowBox[{"{", 
+                    RowBox[{"0", ",", "0", ",", "z"}], "}"}]}], "]"}], ",", 
+                    "z"}], "]"}]}], "&"}], ",", "TWTs"}], "]"}]}]}], "/.", 
+            RowBox[{"z", "->", "0"}]}], " ", ")"}]}]}], ";", 
+        "\[IndentingNewLine]", 
+        RowBox[{"norm", " ", "/=", 
+         RowBox[{
+          RowBox[{"Norm", "/@", 
+           RowBox[{"D", "[", 
+            RowBox[{
+             RowBox[{"\[Theta]TW", "[", 
+              RowBox[{"TWin", ",", 
+               RowBox[{"{", 
+                RowBox[{"0", ",", "0", ",", 
+                 RowBox[{
+                  RowBox[{"z", "-", "\"\<height\>\""}], "/.", "opts"}]}], 
+                "}"}]}], "]"}], ",", "z"}], "]"}]}], "/.", 
+          RowBox[{"z", "\[Rule]", " ", "0"}]}]}], ";", "\[IndentingNewLine]", 
+        
+        RowBox[{"p\[CapitalDelta]\[Theta]", "=", 
+         RowBox[{"ListPlot", "[", 
+          RowBox[{
+           RowBox[{
+            RowBox[{"{", 
+             RowBox[{"rng\[Omega]", ",", "norm"}], "}"}], "\[Transpose]"}], 
+           ",", 
+           RowBox[{"PlotStyle", "\[Rule]", " ", 
+            RowBox[{"{", 
+             RowBox[{"Thick", ",", "Red"}], "}"}]}], ",", " ", 
+           RowBox[{"AxesLabel", "\[Rule]", " ", 
+            RowBox[{"{", 
+             RowBox[{
+             "\"\<\[Omega]\>\"", ",", "\"\<\[Kappa]\[Del]\[Theta].n\>\""}], 
+             "}"}]}], ",", 
+           RowBox[{
+           "PlotLabel", "\[Rule]", "\"\<Heat Flux on boundary\>\""}]}], 
+          "]"}]}], ";", "\[IndentingNewLine]", 
+        RowBox[{"{", 
+         RowBox[{
+         "pu", ",", "p\[Sigma]", ",", "p\[Theta]", ",", 
+          "p\[CapitalDelta]\[Theta]"}], "}"}]}]}], "\[IndentingNewLine]", 
+      "]"}]}], ";"}], "\[IndentingNewLine]"}]}]], "Input",
+ CellChangeTimes->{{3.6889265993392677`*^9, 3.6889265998384733`*^9}, 
+   3.6889694054540777`*^9, {3.688969469674232*^9, 3.688969497666707*^9}, {
+   3.688969737458953*^9, 3.688969867100607*^9}, {3.688969911893907*^9, 
+   3.688969963511283*^9}, {3.6889709020734386`*^9, 3.688970923466074*^9}, {
+   3.68897108861802*^9, 3.6889710999607286`*^9}, {3.6889712603491917`*^9, 
+   3.688971275787861*^9}, {3.688971768021402*^9, 3.6889717852654743`*^9}, {
+   3.688971949067092*^9, 3.688972008731565*^9}, {3.688972350163974*^9, 
+   3.688972350457581*^9}, {3.6889724487333593`*^9, 3.68897245076344*^9}, {
+   3.688974775916945*^9, 3.688974803123279*^9}, {3.688974902281741*^9, 
+   3.688974955003627*^9}, {3.688975030261509*^9, 3.688975032178815*^9}, {
+   3.6889751016931553`*^9, 3.688975109340156*^9}, {3.6889753839799128`*^9, 
+   3.688975392388845*^9}, {3.688975430665415*^9, 3.688975460096109*^9}, {
+   3.6889758171641083`*^9, 3.688975942112874*^9}, {3.688975992472126*^9, 
+   3.6889759966627703`*^9}, {3.688976029407992*^9, 3.68897607249305*^9}, {
+   3.688976194707096*^9, 3.688976197552161*^9}, {3.688976233459549*^9, 
+   3.688976281846086*^9}, {3.688976568167172*^9, 3.6889765897066193`*^9}, {
+   3.6889766247796907`*^9, 3.6889766568724747`*^9}, 3.688976739022235*^9, {
+   3.688976816880046*^9, 3.688976818237586*^9}, {3.6889787102885513`*^9, 
+   3.68897873755936*^9}, {3.688978770110724*^9, 3.6889787853026876`*^9}, {
+   3.688978827693911*^9, 3.688978856647167*^9}, {3.688980520623098*^9, 
+   3.688980566901074*^9}, {3.6889806185649967`*^9, 3.688980666071165*^9}, {
+   3.688983607662022*^9, 3.688983688464406*^9}, {3.688983838133922*^9, 
+   3.688983922404291*^9}, {3.68898397973481*^9, 3.688984083086196*^9}, {
+   3.689401262034277*^9, 3.689401378537024*^9}, 3.689401470046628*^9, {
+   3.689401506990656*^9, 3.689401568014826*^9}, {3.689401601021995*^9, 
+   3.6894017843839207`*^9}, {3.689407171476037*^9, 3.689407292983251*^9}, {
+   3.69494142618346*^9, 3.694941459397936*^9}, {3.694941610161849*^9, 
+   3.6949416114769783`*^9}, {3.694941784465292*^9, 3.6949418034222403`*^9}, {
+   3.694941833989912*^9, 3.694941865493533*^9}, {3.8467616803509283`*^9, 
+   3.846761698246773*^9}, {3.846761732593061*^9, 
+   3.846761735088099*^9}},ExpressionUUID->"98fd0b8a-0878-40d5-8c7f-\
+7bb5b5687888"]
+},
+WindowSize->{1200, 627},
+WindowMargins->{{0, Automatic}, {0, Automatic}},
+FrontEndVersion->"12.3 for Linux x86 (64-bit) (May 11, 2021)",
+StyleDefinitions->"Default.nb",
+ExpressionUUID->"b5cb1b2b-4a83-49d3-8bac-ad132ef37ddf"
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[558, 20, 50677, 1261, 3645, "Input",ExpressionUUID->"98fd0b8a-0878-40d5-8c7f-7bb5b5687888"]
+}
+]
+*)
+

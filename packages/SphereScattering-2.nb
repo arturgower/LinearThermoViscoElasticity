@@ -1,0 +1,2526 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Mathematica 11.0' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       158,          7]
+NotebookDataLength[     95509,       2516]
+NotebookOptionsPosition[     94667,       2486]
+NotebookOutlinePosition[     95006,       2501]
+CellTagsIndexPosition[     94963,       2498]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+Cell[BoxData[""], "Code",
+ InitializationCell->False,
+ FontWeight->"Bold"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{
+   RowBox[{"BeginPackage", "[", "\"\<SphereScattering`\>\"", "]"}], ";"}], 
+  "\n"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"ClearAll", " ", "@@", " ", 
+    RowBox[{"Names", "[", "\"\<SphereScattering`*\>\"", "]"}]}], ";"}], 
+  "\n"}], "\n", 
+ RowBox[{
+  RowBox[{"$Path", " ", "=", " ", 
+   RowBox[{"$Path", "~", "Join", "~", 
+    RowBox[{"{", 
+     RowBox[{
+      RowBox[{"NotebookDirectory", "[", "]"}], ",", 
+      RowBox[{
+       RowBox[{"NotebookDirectory", "[", "]"}], "<>", "\"\<packages/\>\""}]}],
+      "}"}]}]}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"Get", "[", "\"\<ThermalPotentials.wl\>\"", "]"}], ";"}], "\n", 
+  RowBox[{"(*", 
+   RowBox[{
+    RowBox[{"Get", "[", 
+     RowBox[{"\"\<SumsAlgebra.wl\>\"", ",", " ", 
+      RowBox[{"Path", "\[Rule]", " ", 
+       RowBox[{"{", 
+        RowBox[{
+         RowBox[{"NotebookDirectory", "[", "]"}], ",", 
+         RowBox[{
+          RowBox[{"NotebookDirectory", "[", "]"}], "<>", 
+          "\"\<packages/\>\""}]}], "}"}]}]}], "]"}], ";", "\n", 
+    RowBox[{"Get", "[", 
+     RowBox[{"\"\<ThermalPotentials.wl\>\"", ",", " ", 
+      RowBox[{"Path", "\[Rule]", " ", 
+       RowBox[{"{", 
+        RowBox[{
+         RowBox[{"NotebookDirectory", "[", "]"}], ",", 
+         RowBox[{
+          RowBox[{"NotebookDirectory", "[", "]"}], "<>", 
+          "\"\<packages/\>\""}]}], "}"}]}]}], "]"}], ";"}], "*)"}]}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"Vorticity\[CapitalPhi]", "::", "usage"}], " ", "=", " ", 
+   "\"\<takes a 2D vector field and returns a function of (r,\[Theta]) that \
+gives the vorticity.\>\""}], "\n"}], "\n", 
+ RowBox[{
+  RowBox[{"OutgoingDisplacements", "::", "usage"}], " ", "=", " ", 
+  "\"\<Returns three functions {u\[CurlyPhi],u\[CurlyTheta],u\[Chi]}, each is \
+a function u\[CurlyPhi][r,\[Theta]] = \
+{\\!\\(\\*SubscriptBox[\\(u\[CurlyPhi]\\), \\(r\\)]\\),\\!\\(\\*SubscriptBox[\
+\\(u\[CurlyPhi]\\), \\(\[Theta]\\)]\\)}\>\""}], "\n", 
+ RowBox[{
+  RowBox[{"InternalDisplacements", "::", "usage"}], " ", "=", " ", 
+  "\"\<Returns three functions {u\[CurlyPhi],u\[CurlyTheta],u\[Chi]}, each is \
+a function u\[CurlyPhi][r,\[Theta]] = \
+{\\!\\(\\*SubscriptBox[\\(u\[CurlyPhi]\\), \\(r\\)]\\),\\!\\(\\*SubscriptBox[\
+\\(u\[CurlyPhi]\\), \\(\[Theta]\\)]\\)}\>\""}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{
+    RowBox[{"IncidentPressureWaveDisplacement", "::", "usage"}], " ", "=", 
+    " ", "\"\<\>\""}], ";"}], "\n"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"IncidentPressure", "::", "usage"}], " ", "=", " ", 
+   "\"\<IncidentPressure[subNo_,\[Omega]_, opts:OptionsPattern[]] returns a \
+function of (r,\[Theta])\>\""}], "\n"}], "\n", 
+ RowBox[{
+  RowBox[{"InternalPotentials", "::", "usage"}], " ", "=", " ", 
+  "\"\<\>\""}], "\n", 
+ RowBox[{
+  RowBox[{"ScatteredPotentials", "::", "usage"}], " ", "=", " ", 
+  "\"\<\>\""}], "\n", 
+ RowBox[{
+  RowBox[{"OutgoingPressure", "::", "usage"}], " ", "=", " ", 
+  "\"\<OutgoingPressure[subNo_,subNi_,\[Omega]_, opts:OptionsPattern[]] \
+returns a function of (r,\[Theta])\>\""}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"OutgoingTemperatures", "::", "usage"}], " ", "=", " ", 
+   "\"\<\>\""}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"InternalTemperatures", "::", "usage"}], " ", "=", " ", 
+   "\"\<\>\""}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"IncidentPressureWaveTemperature", "::", "usage"}], " ", "=", " ", 
+   "\"\<\>\""}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"TotalInternalTemperature", "::", "usage"}], " ", "=", " ", 
+   "\"\<\>\""}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"TotalDisplacement", "::", "usage"}], "=", "\"\<\>\""}], 
+  ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{
+    RowBox[{"TotalInternalDisplacement", "::", "usage"}], "=", "\"\<\>\""}], 
+   ";"}], "\n"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"SolveSphericalBC", "::", "usage"}], " ", "=", " ", 
+   "\"\<Solves the boundary conditions for a set of external waves and \
+internal waves\>\""}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"emptyTW", "::", "usage"}], " ", "=", " ", 
+   "\"\<an empty ThermalWave or ShearWave\>\""}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"internalSeries", "::", "usage"}], " ", "=", " ", 
+   "\"\<use internalSeries[\[Phi]] gives a general series expansion in terms \
+of BesselJ functions\>\""}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"externalSeries", "::", "usage"}], " ", "=", " ", 
+   "\"\<use externalSeries[\[Phi]] gives a general series expansion in terms \
+of Hankel functions\>\""}], ";"}], "\n"}], "Code",
+ FontWeight->"Bold"],
+
+Cell[BoxData[""], "Code",
+ InitializationCell->False,
+ FontWeight->"Bold"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"Begin", "[", "\"\<`Private`\>\"", "]"}], "\n"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"standardOptions", " ", "=", " ", 
+    RowBox[{"{", 
+     RowBox[{
+      RowBox[{"\"\<radius\>\"", "->", " ", 
+       RowBox[{
+        RowBox[{"1", "/", "4"}], " ", 
+        RowBox[{"10", "^", 
+         RowBox[{"-", "6"}]}]}]}], ",", " ", 
+      RowBox[{"\"\<LegendreOrder\>\"", "->", "10"}], ",", " ", 
+      RowBox[{"WorkingPrecision", "->", "40"}], ",", " ", "\n", 
+      "                   ", 
+      RowBox[{"\"\<IncidentScatteringCoefficientFunction\>\"", " ", "->", " ", 
+       RowBox[{"(", 
+        RowBox[{"1", " ", "&"}], ")"}]}], ",", " ", 
+      RowBox[{"\"\<Verbose\>\"", "->", " ", "False"}]}], "}"}]}], ";"}], " ", 
+  "\n"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"Options", "[", "TotalInternalDisplacement", "]"}], "=", " ", 
+   "standardOptions"}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{
+    RowBox[{"Options", "[", "TotalDisplacement", "]"}], "=", " ", 
+    "standardOptions"}], ";"}], "\n"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{
+    RowBox[{"Options", "[", "OutgoingTemperatures", "]"}], "=", " ", 
+    "standardOptions"}], ";"}], "\n"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"Options", "[", "OutgoingDisplacements", "]"}], "=", " ", 
+   "standardOptions"}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"Options", "[", "OutgoingPressure", "]"}], "=", " ", 
+   "standardOptions"}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"Options", "[", "ScatteredPotentials", "]"}], "=", " ", 
+   "standardOptions"}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{
+    RowBox[{"Options", "[", "InternalPotentials", "]"}], "=", " ", 
+    "standardOptions"}], ";"}], "\n"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"Options", "[", "InternalTemperatures", "]"}], "=", " ", 
+   "standardOptions"}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"Options", "[", "TotalInternalTemperature", "]"}], "=", " ", 
+   "standardOptions"}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{
+    RowBox[{"Options", "[", "InternalDisplacements", "]"}], "=", " ", 
+    "standardOptions"}], ";"}], "\n"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"Options", "[", "IncidentPressure", "]"}], "=", " ", 
+   "standardOptions"}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"Options", "[", "IncidentPressureWaveDisplacement", "]"}], "=", 
+   " ", "standardOptions"}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"Options", "[", "IncidentPressureWaveTemperature", "]"}], "=", " ",
+    "standardOptions"}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{
+    RowBox[{"Options", "[", "SolveSphericalBC", "]"}], "=", " ", 
+    "standardOptions"}], ";"}], "\n", "\n", "   "}], "\n", 
+ RowBox[{
+  RowBox[{"$Assumptions", " ", "=", " ", 
+   RowBox[{"{", 
+    RowBox[{
+     RowBox[{"\[FormalR]", ">=", " ", "0"}], ",", " ", 
+     RowBox[{"\[FormalN]", " ", "\[Element]", " ", "Integers"}], ",", 
+     RowBox[{"0", "<=", " ", "\[FormalT]", "<=", " ", "\[Pi]"}]}], "}"}]}], 
+  ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"subNto", "[", "o_", "]"}], " ", ":=", " ", 
+   RowBox[{
+    RowBox[{
+     RowBox[{"#", "->", 
+      RowBox[{"(", 
+       RowBox[{"#", "<>", "o"}], ")"}]}], "&"}], "/@", "AllParameters"}]}], 
+  ";"}], "\n", 
+ RowBox[{
+  RowBox[{"subNoPressure", " ", "=", " ", 
+   RowBox[{"{", 
+    RowBox[{
+     RowBox[{"\[FormalCapitalA]", "[", 
+      RowBox[{"\"\<\[CurlyPhi]\>\"", ",", "_", ",", "_"}], "]"}], " ", "->", 
+     " ", "0"}], "}"}]}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{"subNoThermal", " ", "=", " ", 
+   RowBox[{"{", 
+    RowBox[{
+     RowBox[{"\[FormalCapitalA]", "[", 
+      RowBox[{"\"\<\[CurlyTheta]\>\"", ",", "_", ",", "_"}], "]"}], " ", "->",
+      " ", "0"}], "}"}]}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"subNoShear", " ", "=", " ", 
+    RowBox[{"{", 
+     RowBox[{
+      RowBox[{"\[FormalCapitalA]", "[", 
+       RowBox[{"\"\<\[Chi]\>\"", ",", "_", ",", "_"}], "]"}], " ", "->", " ", 
+      "0"}], "}"}]}], ";"}], "\n"}], "\n", 
+ RowBox[{
+  RowBox[{"emptyTW", " ", "=", " ", 
+   RowBox[{"<|", 
+    RowBox[{
+     RowBox[{"\"\<Name\>\"", " ", "->", " ", "\"\<the emptyness\>\""}], ",", 
+     " ", 
+     RowBox[{"\"\<rng\[Omega]\>\"", "->", " ", 
+      RowBox[{"{", "0.", "}"}]}], ",", " ", "\n", "             ", 
+     RowBox[{"\"\<WaveNumbers\>\"", "->", 
+      RowBox[{"{", "0.", "}"}]}], ",", " ", 
+     RowBox[{"\"\<WaveModes\>\"", "->", 
+      RowBox[{"{", 
+       RowBox[{"0.", ",", "0."}], "}"}]}], ",", " ", 
+     RowBox[{"\"\<parameters\>\"", "->", 
+      RowBox[{"{", "}"}]}]}], "|>"}]}], ";"}]}], "Code",
+ CellChangeTimes->{{3.7302036357931213`*^9, 3.730203639310186*^9}},
+ FontWeight->"Bold"],
+
+Cell[BoxData[
+ RowBox[{"NOTE", ":", " ", 
+  RowBox[{"looks", " ", "like", " ", 
+   RowBox[{"Valerie", "'"}], "s", " ", "vorticity", " ", "is", " ", 
+   "negative", " ", "the", " ", "below"}]}]], "Code",
+ InitializationCell->False,
+ FontWeight->"Bold"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{
+   RowBox[{
+    RowBox[{"Vorticity\[CapitalPhi]", "[", "us_", "]"}], ":=", " ", 
+    RowBox[{"Module", "[", 
+     RowBox[{
+      RowBox[{"{", "f", "}"}], ",", " ", 
+      RowBox[{
+       RowBox[{
+        RowBox[{"f", "[", 
+         RowBox[{"\[FormalR]_", ",", "\[FormalT]_"}], "]"}], "=", " ", 
+        RowBox[{
+         RowBox[{
+          RowBox[{"-", "1"}], "/", "\[FormalR]"}], " ", 
+         RowBox[{"(", 
+          RowBox[{
+           RowBox[{
+            RowBox[{"us", "[", 
+             RowBox[{"\[FormalR]", ",", "\[FormalT]"}], "]"}], "[", 
+            RowBox[{"[", "2", "]"}], "]"}], " ", "+", " ", 
+           RowBox[{"\[FormalR]", " ", 
+            RowBox[{"D", "[", 
+             RowBox[{
+              RowBox[{
+               RowBox[{"us", "[", 
+                RowBox[{"\[FormalR]", ",", "\[FormalT]"}], "]"}], "[", 
+               RowBox[{"[", "2", "]"}], "]"}], ",", "\[FormalR]"}], "]"}]}], 
+           "-", " ", 
+           RowBox[{"D", "[", 
+            RowBox[{
+             RowBox[{
+              RowBox[{"us", "[", 
+               RowBox[{"\[FormalR]", ",", "\[FormalT]"}], "]"}], "[", 
+              RowBox[{"[", "1", "]"}], "]"}], ",", "\[FormalT]"}], "]"}]}], 
+          ")"}]}]}], ";", " ", 
+       RowBox[{"Return", "[", "f", "]"}]}]}], "]"}]}], ";"}], " ", 
+  "\n"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{
+    RowBox[{"IncidentPressureWaveTemperature", "[", 
+     RowBox[{"subN_", ",", "\[Omega]_", ",", " ", 
+      RowBox[{"opts", ":", 
+       RowBox[{"OptionsPattern", "[", "]"}]}]}], "]"}], ":=", " ", "\n", 
+    RowBox[{"Module", "[", 
+     RowBox[{
+      RowBox[{"{", 
+       RowBox[{"subn", ",", " ", 
+        RowBox[{"precision", " ", "=", " ", 
+         RowBox[{"Max", "[", 
+          RowBox[{
+           RowBox[{"OptionValue", "@", "WorkingPrecision"}], ",", " ", 
+           RowBox[{"Precision", "@", "subN"}]}], "]"}]}], ",", "\n", 
+        RowBox[{"N", " ", "=", " ", 
+         RowBox[{"OptionValue", "@", "\"\<LegendreOrder\>\""}]}], ",", " ", 
+        "subWaveCoefficients", ",", "TW\[CurlyPhi]", ",", "TW\[CurlyTheta]", 
+        ",", "N\[Tau]0", ",", "r", ",", "\[Theta]"}], "}"}], ",", "\n", "  ", 
+      "\n", "  ", 
+      RowBox[{
+       RowBox[{"subn", " ", "=", " ", 
+        RowBox[{"SetPrecision", "[", 
+         RowBox[{
+          RowBox[{"AddToNsub", "@", "subN"}], ",", "precision"}], "]"}]}], 
+       ";", "\n", "  ", 
+       RowBox[{
+        RowBox[{"{", 
+         RowBox[{"TW\[CurlyPhi]", ",", "TW\[CurlyTheta]"}], "}"}], " ", "=", 
+        " ", 
+        RowBox[{"ThermalPotentials", "[", 
+         RowBox[{"subn", ",", 
+          RowBox[{"SetPrecision", "[", 
+           RowBox[{
+            RowBox[{"{", "\[Omega]", "}"}], ",", "precision"}], "]"}]}], 
+         "]"}]}], ";", "\n", "  ", 
+       RowBox[{"subWaveCoefficients", " ", "=", " ", 
+        RowBox[{"{", "\n", "    ", 
+         RowBox[{
+          RowBox[{"\"\<T\[CurlyPhi]o\>\"", " ", "->", " ", 
+           RowBox[{
+            RowBox[{"TW\[CurlyPhi]", "[", "\"\<WaveModes\>\"", "]"}], "[", 
+            RowBox[{"[", 
+             RowBox[{"1", ",", "2"}], "]"}], "]"}]}], ",", 
+          RowBox[{"\"\<U\[CurlyPhi]o\>\"", " ", "->", " ", 
+           RowBox[{
+            RowBox[{"TW\[CurlyPhi]", "[", "\"\<WaveModes\>\"", "]"}], "[", 
+            RowBox[{"[", 
+             RowBox[{"1", ",", "1"}], "]"}], "]"}]}], ",", " ", "\n", "    ", 
+          
+          RowBox[{
+           RowBox[{"\[FormalK]", "[", 
+            RowBox[{"\"\<\[CurlyPhi]\>\"", ",", "\"\<o\>\""}], "]"}], "->", 
+           RowBox[{
+            RowBox[{"TW\[CurlyPhi]", "[", "\"\<WaveNumbers\>\"", "]"}], "[", 
+            RowBox[{"[", "1", "]"}], "]"}]}], ",", " ", 
+          RowBox[{
+           RowBox[{"\[FormalCapitalA]", "[", 
+            RowBox[{
+            "\"\<\[CurlyPhi]0\>\"", ",", "\[FormalN]_", ",", "\"\<o\>\""}], 
+            "]"}], " ", "->", " ", 
+           RowBox[{
+            RowBox[{
+            "OptionValue", "[", 
+             "\"\<IncidentScatteringCoefficientFunction\>\"", "]"}], "[", 
+            "\[FormalN]", "]"}]}]}], "\n", "  ", "}"}]}], ";", "\n", "  ", 
+       RowBox[{
+        RowBox[{"N\[Tau]0", "[", 
+         RowBox[{"r_", ",", "\[Theta]_"}], "]"}], " ", "=", " ", 
+        RowBox[{"Activate", "[", 
+         RowBox[{
+          RowBox[{
+           RowBox[{
+            RowBox[{"\[Tau]0", "/.", 
+             RowBox[{"{", 
+              RowBox[{"\[Infinity]", " ", "->", " ", "N"}], "}"}]}], "/.", 
+            "subWaveCoefficients"}], "/.", 
+           RowBox[{"(", 
+            RowBox[{"subn", "/.", 
+             RowBox[{"subNto", "[", "\"\<o\>\"", "]"}]}], ")"}]}], "/.", 
+          RowBox[{"{", 
+           RowBox[{
+            RowBox[{"\[FormalR]", "->", "r"}], ",", 
+            RowBox[{"\[FormalT]", "->", "\[Theta]"}]}], "}"}]}], "]"}]}], ";",
+        "\n", " ", 
+       RowBox[{"Return", "[", "N\[Tau]0", "]"}]}]}], "\n", "]"}]}], ";"}], 
+  "\n"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{
+    RowBox[{"IncidentPressure", "[", 
+     RowBox[{"subN_", ",", "\[Omega]_", ",", " ", 
+      RowBox[{"opts", ":", 
+       RowBox[{"OptionsPattern", "[", "]"}]}]}], "]"}], ":=", " ", "\n", 
+    RowBox[{"Module", "[", 
+     RowBox[{
+      RowBox[{"{", 
+       RowBox[{"subn", ",", " ", 
+        RowBox[{"precision", " ", "=", " ", 
+         RowBox[{"Max", "[", 
+          RowBox[{
+           RowBox[{"OptionValue", "@", "WorkingPrecision"}], ",", " ", 
+           RowBox[{"Precision", "@", "subN"}]}], "]"}]}], ",", "\n", 
+        RowBox[{"N", " ", "=", " ", 
+         RowBox[{"OptionValue", "@", "\"\<LegendreOrder\>\""}]}], ",", " ", 
+        "subWaveCoefficients", ",", "TW\[CurlyPhi]", ",", "TW\[CurlyTheta]", 
+        ",", "r", ",", "\[Theta]"}], "}"}], ",", "\n", "  ", 
+      RowBox[{
+       RowBox[{"subn", " ", "=", " ", 
+        RowBox[{"SetPrecision", "[", 
+         RowBox[{
+          RowBox[{"AddToNsub", "@", "subN"}], ",", "precision"}], "]"}]}], 
+       ";", "\n", "  ", 
+       RowBox[{
+        RowBox[{"{", 
+         RowBox[{"TW\[CurlyPhi]", ",", "TW\[CurlyTheta]"}], "}"}], " ", "=", 
+        " ", 
+        RowBox[{"ThermalPotentials", "[", 
+         RowBox[{"subn", ",", 
+          RowBox[{"SetPrecision", "[", 
+           RowBox[{
+            RowBox[{"{", "\[Omega]", "}"}], ",", "precision"}], "]"}]}], 
+         "]"}]}], ";", "\n", "  ", 
+       RowBox[{"subWaveCoefficients", "=", " ", 
+        RowBox[{"{", "\n", "    ", 
+         RowBox[{
+          RowBox[{"\"\<T\[CurlyPhi]o\>\"", " ", "->", " ", 
+           RowBox[{
+            RowBox[{"TW\[CurlyPhi]", "[", "\"\<WaveModes\>\"", "]"}], "[", 
+            RowBox[{"[", 
+             RowBox[{"1", ",", "2"}], "]"}], "]"}]}], ",", 
+          RowBox[{"\"\<U\[CurlyPhi]o\>\"", " ", "->", " ", 
+           RowBox[{
+            RowBox[{"TW\[CurlyPhi]", "[", "\"\<WaveModes\>\"", "]"}], "[", 
+            RowBox[{"[", 
+             RowBox[{"1", ",", "1"}], "]"}], "]"}]}], ",", " ", "\n", "    ", 
+          
+          RowBox[{
+           RowBox[{"\[FormalK]", "[", 
+            RowBox[{"\"\<\[CurlyPhi]\>\"", ",", "\"\<o\>\""}], "]"}], "->", 
+           RowBox[{
+            RowBox[{"TW\[CurlyPhi]", "[", "\"\<WaveNumbers\>\"", "]"}], "[", 
+            RowBox[{"[", "1", "]"}], "]"}]}], ",", " ", 
+          RowBox[{
+           RowBox[{"\[FormalCapitalA]", "[", 
+            RowBox[{
+            "\"\<\[CurlyPhi]0\>\"", ",", "\[FormalN]_", ",", "\"\<o\>\""}], 
+            "]"}], " ", "->", " ", 
+           RowBox[{
+            RowBox[{
+            "OptionValue", "[", 
+             "\"\<IncidentScatteringCoefficientFunction\>\"", "]"}], "[", 
+            "\[FormalN]", "]"}]}]}], "\n", "  ", "}"}]}], ";", "\n", "  ", 
+       RowBox[{
+        RowBox[{"Np", "[", 
+         RowBox[{"r_", ",", "\[Theta]_"}], "]"}], " ", "=", " ", 
+        RowBox[{"Activate", "[", " ", 
+         RowBox[{
+          RowBox[{
+           RowBox[{
+            RowBox[{
+             RowBox[{
+              RowBox[{
+               RowBox[{"-", 
+                RowBox[{"(", 
+                 RowBox[{"\"\<\[Beta]o\>\"", "-", 
+                  RowBox[{
+                  "I", " ", "\"\<\[Eta]\[Beta]o\>\"", " ", "\[Omega]"}]}], 
+                 ")"}]}], 
+               RowBox[{"(", 
+                RowBox[{
+                 RowBox[{
+                  RowBox[{"D", "[", 
+                   RowBox[{
+                    RowBox[{
+                    RowBox[{"\[FormalR]", "^", "2"}], " ", "ur0"}], ",", 
+                    "\[FormalR]"}], "]"}], "/", 
+                  RowBox[{"(", 
+                   RowBox[{"\[FormalR]", "^", "2"}], ")"}]}], " ", "\n", 
+                 "        ", "+", 
+                 RowBox[{
+                  RowBox[{"(", 
+                   RowBox[{
+                   "u\[Theta]0", "/.", "subLegendreDerivativeIdentity"}], 
+                   ")"}], "/", "\[FormalR]"}]}], ")"}]}], "+", 
+              RowBox[{"\"\<\[Alpha]o\>\"", "\"\<\[Beta]o\>\"", "\[Tau]0"}]}], 
+             "/.", 
+             RowBox[{"{", 
+              RowBox[{"\[Infinity]", " ", "->", " ", "N"}], "}"}]}], "/.", 
+            "subWaveCoefficients"}], "/.", 
+           RowBox[{"(", 
+            RowBox[{"subn", "/.", 
+             RowBox[{"subNto", "[", "\"\<o\>\"", "]"}]}], ")"}]}], "/.", 
+          RowBox[{"{", 
+           RowBox[{
+            RowBox[{"\[FormalT]", "->", "\[Theta]"}], ",", 
+            RowBox[{"\[FormalR]", "->", "r"}]}], "}"}]}], "]"}]}], ";", "\n", 
+       " ", 
+       RowBox[{"Return", "[", "Np", "]"}]}]}], "\n", "]"}]}], ";"}], 
+  "\n"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{
+    RowBox[{"IncidentPressureWaveDisplacement", "[", 
+     RowBox[{"subN_", ",", "\[Omega]_", ",", " ", 
+      RowBox[{"opts", ":", 
+       RowBox[{"OptionsPattern", "[", "]"}]}]}], "]"}], ":=", " ", "\n", 
+    RowBox[{"Module", "[", 
+     RowBox[{
+      RowBox[{"{", 
+       RowBox[{"subn", ",", " ", 
+        RowBox[{"precision", " ", "=", " ", 
+         RowBox[{"Max", "[", 
+          RowBox[{
+           RowBox[{"OptionValue", "@", "WorkingPrecision"}], ",", " ", 
+           RowBox[{"Precision", "@", "subN"}]}], "]"}]}], ",", "\n", 
+        RowBox[{"N", " ", "=", " ", 
+         RowBox[{"OptionValue", "@", "\"\<LegendreOrder\>\""}]}], ",", " ", 
+        "subWaveCoefficients", ",", "TW\[CurlyPhi]", ",", "TW\[CurlyTheta]", 
+        ",", "Nu\[CurlyPhi]", ",", " ", "r", ",", " ", "\[Theta]"}], "}"}], 
+      ",", "\n", "  ", "\n", "  ", 
+      RowBox[{
+       RowBox[{"subn", " ", "=", " ", 
+        RowBox[{"SetPrecision", "[", 
+         RowBox[{
+          RowBox[{"AddToNsub", "@", "subN"}], ",", " ", "precision"}], 
+         "]"}]}], ";", "\n", "  ", 
+       RowBox[{
+        RowBox[{"{", 
+         RowBox[{"TW\[CurlyPhi]", ",", "TW\[CurlyTheta]"}], "}"}], " ", "=", 
+        " ", 
+        RowBox[{"ThermalPotentials", "[", 
+         RowBox[{"subn", ",", " ", 
+          RowBox[{"SetPrecision", "[", 
+           RowBox[{
+            RowBox[{"{", "\[Omega]", "}"}], ",", "precision"}], "]"}]}], 
+         "]"}]}], ";", "\n", "  ", 
+       RowBox[{"subWaveCoefficients", "=", " ", 
+        RowBox[{"{", 
+         RowBox[{
+          RowBox[{
+           RowBox[{"\[FormalK]", "[", 
+            RowBox[{"\"\<\[CurlyPhi]\>\"", ",", "\"\<o\>\""}], "]"}], "->", 
+           RowBox[{
+            RowBox[{"TW\[CurlyPhi]", "[", "\"\<WaveNumbers\>\"", "]"}], "[", 
+            RowBox[{"[", "1", "]"}], "]"}]}], ",", 
+          RowBox[{"\"\<U\[CurlyPhi]o\>\"", " ", "->", " ", 
+           RowBox[{
+            RowBox[{"TW\[CurlyPhi]", "[", "\"\<WaveModes\>\"", "]"}], "[", 
+            RowBox[{"[", 
+             RowBox[{"1", ",", "1"}], "]"}], "]"}]}], ",", " ", "\n", "  ", 
+          RowBox[{
+           RowBox[{"\[FormalCapitalA]", "[", 
+            RowBox[{
+            "\"\<\[CurlyPhi]0\>\"", ",", "\[FormalN]_", ",", "\"\<o\>\""}], 
+            "]"}], " ", "->", " ", 
+           RowBox[{
+            RowBox[{
+            "OptionValue", "[", 
+             "\"\<IncidentScatteringCoefficientFunction\>\"", "]"}], "[", 
+            "\[FormalN]", "]"}]}]}], "}"}]}], ";", "\n", "  ", 
+       RowBox[{
+        RowBox[{"Nu\[CurlyPhi]", "[", 
+         RowBox[{"r_", ",", "\[Theta]_"}], "]"}], " ", "=", " ", 
+        RowBox[{"Activate", "[", 
+         RowBox[{
+          RowBox[{
+           RowBox[{
+            RowBox[{
+             RowBox[{"{", 
+              RowBox[{"ur0", ",", "u\[Theta]0"}], "}"}], "/.", 
+             RowBox[{"{", 
+              RowBox[{"\[Infinity]", " ", "->", " ", "N"}], "}"}]}], "/.", 
+            "subWaveCoefficients"}], "/.", 
+           RowBox[{"(", 
+            RowBox[{"subn", "/.", 
+             RowBox[{"subNto", "[", "\"\<o\>\"", "]"}]}], ")"}]}], "/.", 
+          RowBox[{"{", 
+           RowBox[{
+            RowBox[{"\[FormalR]", "->", "r"}], ",", 
+            RowBox[{"\[FormalT]", "->", "\[Theta]"}]}], "}"}]}], "]"}]}], ";",
+        "\n", " ", 
+       RowBox[{"Return", "[", "Nu\[CurlyPhi]", "]"}]}]}], "\n", "]"}]}], 
+   ";"}], "\n"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{
+    RowBox[{"TotalInternalTemperature", "[", 
+     RowBox[{"subNo_", ",", "subNi_", ",", "\[Omega]_", ",", " ", 
+      RowBox[{"opts", ":", 
+       RowBox[{"OptionsPattern", "[", "]"}]}]}], "]"}], ":=", " ", "\n", 
+    RowBox[{"Module", "[", 
+     RowBox[{
+      RowBox[{"{", 
+       RowBox[{"subN", ",", "subsols", ",", " ", 
+        RowBox[{"N", " ", "=", " ", 
+         RowBox[{"OptionValue", "@", "\"\<LegendreOrder\>\""}]}], ",", "NTi", 
+        ",", " ", "r", ",", " ", "\[Theta]"}], "}"}], ",", "\n", "  ", 
+      RowBox[{
+       RowBox[{
+        RowBox[{"{", 
+         RowBox[{"subsols", ",", "subN"}], "}"}], " ", "=", " ", 
+        RowBox[{"SolveSphericalBC", "[", 
+         RowBox[{"subNo", ",", "subNi", ",", "\[Omega]", ",", " ", 
+          RowBox[{"FilterRules", "[", 
+           RowBox[{
+            RowBox[{"{", "opts", "}"}], ",", " ", 
+            RowBox[{"Options", "[", "SolveSphericalBC", "]"}]}], "]"}]}], 
+         "]"}]}], ";", "\n", "  ", 
+       RowBox[{
+        RowBox[{"NTi", "[", 
+         RowBox[{"r_", ",", "\[Theta]_"}], "]"}], " ", "=", " ", 
+        RowBox[{
+         RowBox[{"Activate", "[", 
+          RowBox[{
+           RowBox[{
+            RowBox[{"Ti", "/.", 
+             RowBox[{"{", 
+              RowBox[{"\[Infinity]", " ", "->", " ", "N"}], "}"}]}], "/.", 
+            "subN"}], "/.", 
+           RowBox[{"{", 
+            RowBox[{
+             RowBox[{"\[FormalR]", "->", "r"}], ",", 
+             RowBox[{"\[FormalT]", "->", "\[Theta]"}]}], "}"}]}], "]"}], "/.", 
+         RowBox[{"Flatten", "[", "subsols", "]"}]}]}], ";", "\n", " ", 
+       RowBox[{"Return", "[", "NTi", "]"}]}]}], "\n", "]"}]}], ";"}], 
+  "\n"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{
+    RowBox[{"InternalTemperatures", "[", 
+     RowBox[{"subNo_", ",", "subNi_", ",", "\[Omega]_", ",", " ", 
+      RowBox[{"opts", ":", 
+       RowBox[{"OptionsPattern", "[", "]"}]}]}], "]"}], ":=", " ", "\n", 
+    RowBox[{"Module", "[", 
+     RowBox[{
+      RowBox[{"{", 
+       RowBox[{"subN", ",", "subsols", ",", " ", 
+        RowBox[{"N", " ", "=", " ", 
+         RowBox[{"OptionValue", "@", "\"\<LegendreOrder\>\""}]}], ",", 
+        "NT\[CurlyPhi]", ",", "NT\[CurlyTheta]", ",", "NT\[Chi]", ",", " ", 
+        "r", ",", " ", "\[Theta]"}], "}"}], ",", "\n", "  ", 
+      RowBox[{
+       RowBox[{
+        RowBox[{"{", 
+         RowBox[{"subsols", ",", "subN"}], "}"}], " ", "=", " ", 
+        RowBox[{"SolveSphericalBC", "[", 
+         RowBox[{"subNo", ",", "subNi", ",", "\[Omega]", ",", " ", 
+          RowBox[{"FilterRules", "[", 
+           RowBox[{
+            RowBox[{"{", "opts", "}"}], ",", " ", 
+            RowBox[{"Options", "[", "SolveSphericalBC", "]"}]}], "]"}]}], 
+         "]"}]}], ";", "\n", "\n", "  ", 
+       RowBox[{
+        RowBox[{"NT\[CurlyPhi]", "[", 
+         RowBox[{"r_", ",", "\[Theta]_"}], "]"}], " ", "=", " ", 
+        RowBox[{
+         RowBox[{
+          RowBox[{
+           RowBox[{"Activate", "[", 
+            RowBox[{
+             RowBox[{
+              RowBox[{"Ti", "/.", 
+               RowBox[{"{", 
+                RowBox[{"\[Infinity]", " ", "->", " ", "N"}], "}"}]}], "/.", 
+              "subN"}], "/.", 
+             RowBox[{"{", 
+              RowBox[{
+               RowBox[{"\[FormalR]", "->", "r"}], ",", 
+               RowBox[{"\[FormalT]", "->", "\[Theta]"}]}], "}"}]}], "]"}], "/.",
+            "subNoThermal"}], "/.", "subNoShear"}], "/.", 
+         RowBox[{"Flatten", "[", "subsols", "]"}]}]}], ";", "\n", "  ", 
+       RowBox[{
+        RowBox[{"NT\[CurlyTheta]", "[", 
+         RowBox[{"r_", ",", "\[Theta]_"}], "]"}], " ", "=", " ", 
+        RowBox[{
+         RowBox[{
+          RowBox[{
+           RowBox[{"Activate", "[", 
+            RowBox[{
+             RowBox[{
+              RowBox[{"Ti", "/.", 
+               RowBox[{"{", 
+                RowBox[{"\[Infinity]", " ", "->", " ", "N"}], "}"}]}], "/.", 
+              "subN"}], "/.", 
+             RowBox[{"{", 
+              RowBox[{
+               RowBox[{"\[FormalR]", "->", "r"}], ",", 
+               RowBox[{"\[FormalT]", "->", "\[Theta]"}]}], "}"}]}], "]"}], "/.",
+            "subNoPressure"}], "/.", "subNoShear"}], "/.", 
+         RowBox[{"Flatten", "[", "subsols", "]"}]}]}], ";", "\n", "  ", 
+       RowBox[{
+        RowBox[{"NT\[Chi]", "[", 
+         RowBox[{"r_", ",", "\[Theta]_"}], "]"}], " ", "=", " ", 
+        RowBox[{
+         RowBox[{
+          RowBox[{
+           RowBox[{"Activate", "[", 
+            RowBox[{
+             RowBox[{
+              RowBox[{"Ti", "/.", 
+               RowBox[{"{", 
+                RowBox[{"\[Infinity]", " ", "->", " ", "N"}], "}"}]}], "/.", 
+              "subN"}], "/.", 
+             RowBox[{"{", 
+              RowBox[{
+               RowBox[{"\[FormalR]", "->", "r"}], ",", 
+               RowBox[{"\[FormalT]", "->", "\[Theta]"}]}], "}"}]}], "]"}], "/.",
+            "subNoPressure"}], "/.", "subNoThermal"}], "/.", 
+         RowBox[{"Flatten", "[", "subsols", "]"}]}]}], ";", "\n", " ", 
+       RowBox[{"Return", "[", 
+        RowBox[{"{", 
+         RowBox[{"NT\[CurlyPhi]", ",", "NT\[CurlyTheta]", ",", "NT\[Chi]"}], 
+         "}"}], "]"}]}]}], "\n", "]"}]}], ";"}], "\n"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{
+    RowBox[{"TotalInternalDisplacement", "[", 
+     RowBox[{"subNo_", ",", "subNi_", ",", "\[Omega]_", ",", " ", 
+      RowBox[{"opts", ":", 
+       RowBox[{"OptionsPattern", "[", "]"}]}]}], "]"}], ":=", " ", "\n", 
+    RowBox[{"Module", "[", 
+     RowBox[{
+      RowBox[{"{", 
+       RowBox[{"subN", ",", "subsols", ",", " ", 
+        RowBox[{"N", " ", "=", " ", 
+         RowBox[{"OptionValue", "@", "\"\<LegendreOrder\>\""}]}], ",", "Nu", 
+        ",", " ", "r", ",", " ", "\[Theta]"}], "}"}], ",", "\n", "  ", 
+      RowBox[{
+       RowBox[{
+        RowBox[{"{", 
+         RowBox[{"subsols", ",", "subN"}], "}"}], " ", "=", " ", 
+        RowBox[{"SolveSphericalBC", "[", 
+         RowBox[{"subNo", ",", "subNi", ",", "\[Omega]", ",", " ", 
+          RowBox[{"FilterRules", "[", 
+           RowBox[{
+            RowBox[{"{", "opts", "}"}], ",", " ", 
+            RowBox[{"Options", "[", "SolveSphericalBC", "]"}]}], "]"}]}], 
+         "]"}]}], ";", "\n", "  ", 
+       RowBox[{
+        RowBox[{"Nu", "[", 
+         RowBox[{"r_", ",", "\[Theta]_"}], "]"}], " ", "=", " ", 
+        RowBox[{
+         RowBox[{"Activate", "[", 
+          RowBox[{
+           RowBox[{
+            RowBox[{
+             RowBox[{"{", 
+              RowBox[{"uri", ",", "u\[Theta]i"}], "}"}], "/.", 
+             RowBox[{"{", 
+              RowBox[{"\[Infinity]", " ", "->", " ", "N"}], "}"}]}], "/.", 
+            "subN"}], "/.", 
+           RowBox[{"{", 
+            RowBox[{
+             RowBox[{"\[FormalR]", "->", "r"}], ",", 
+             RowBox[{"\[FormalT]", "->", "\[Theta]"}]}], "}"}]}], "]"}], "/.", 
+         RowBox[{"Flatten", "[", "subsols", "]"}]}]}], ";", "\n", " ", 
+       RowBox[{"Return", "[", "Nu", "]"}]}]}], "\n", "]"}]}], ";"}], 
+  "\n"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{
+    RowBox[{"InternalDisplacements", "[", 
+     RowBox[{"subNo_", ",", "subNi_", ",", "\[Omega]_", ",", " ", 
+      RowBox[{"opts", ":", 
+       RowBox[{"OptionsPattern", "[", "]"}]}]}], "]"}], ":=", " ", "\n", 
+    RowBox[{"Module", "[", 
+     RowBox[{
+      RowBox[{"{", 
+       RowBox[{"subN", ",", "subsols", ",", " ", 
+        RowBox[{"N", " ", "=", " ", 
+         RowBox[{"OptionValue", "@", "\"\<LegendreOrder\>\""}]}], ",", 
+        "Nu\[CurlyPhi]", ",", "Nu\[CurlyTheta]", ",", "Nu\[Chi]", ",", "r", 
+        ",", "\[Theta]"}], "}"}], ",", "\n", "  ", 
+      RowBox[{
+       RowBox[{
+        RowBox[{"{", 
+         RowBox[{"subsols", ",", "subN"}], "}"}], " ", "=", " ", 
+        RowBox[{"SolveSphericalBC", "[", 
+         RowBox[{"subNo", ",", "subNi", ",", "\[Omega]", ",", " ", 
+          RowBox[{"FilterRules", "[", 
+           RowBox[{
+            RowBox[{"{", "opts", "}"}], ",", " ", 
+            RowBox[{"Options", "[", "SolveSphericalBC", "]"}]}], "]"}]}], 
+         "]"}]}], ";", "\n", "\n", "  ", 
+       RowBox[{
+        RowBox[{"Nu\[CurlyPhi]", "[", 
+         RowBox[{"r_", ",", "\[Theta]_"}], "]"}], " ", "=", " ", 
+        RowBox[{
+         RowBox[{
+          RowBox[{
+           RowBox[{"Activate", "[", 
+            RowBox[{
+             RowBox[{
+              RowBox[{
+               RowBox[{"{", 
+                RowBox[{"uri", ",", "u\[Theta]i"}], "}"}], "/.", 
+               RowBox[{"{", 
+                RowBox[{"\[Infinity]", " ", "->", " ", "N"}], "}"}]}], "/.", 
+              "subN"}], "/.", 
+             RowBox[{"{", 
+              RowBox[{
+               RowBox[{"\[FormalR]", "->", "r"}], ",", 
+               RowBox[{"\[FormalT]", "->", "\[Theta]"}]}], "}"}]}], "]"}], "/.",
+            "subNoThermal"}], "/.", "subNoShear"}], "/.", 
+         RowBox[{"Flatten", "[", "subsols", "]"}]}]}], ";", "\n", "  ", 
+       RowBox[{
+        RowBox[{"Nu\[CurlyTheta]", "[", 
+         RowBox[{"r_", ",", "\[Theta]_"}], "]"}], " ", "=", " ", 
+        RowBox[{
+         RowBox[{
+          RowBox[{
+           RowBox[{"Activate", "[", 
+            RowBox[{
+             RowBox[{
+              RowBox[{
+               RowBox[{"{", 
+                RowBox[{"uri", ",", "u\[Theta]i"}], "}"}], "/.", 
+               RowBox[{"{", 
+                RowBox[{"\[Infinity]", " ", "->", " ", "N"}], "}"}]}], "/.", 
+              "subN"}], "/.", 
+             RowBox[{"{", 
+              RowBox[{
+               RowBox[{"\[FormalR]", "->", "r"}], ",", 
+               RowBox[{"\[FormalT]", "->", "\[Theta]"}]}], "}"}]}], "]"}], "/.",
+            "subNoPressure"}], "/.", "subNoShear"}], "/.", 
+         RowBox[{"Flatten", "[", "subsols", "]"}]}]}], ";", "\n", "  ", 
+       RowBox[{
+        RowBox[{"Nu\[Chi]", "[", 
+         RowBox[{"r_", ",", "\[Theta]_"}], "]"}], " ", "=", " ", 
+        RowBox[{
+         RowBox[{
+          RowBox[{
+           RowBox[{"Activate", "[", 
+            RowBox[{
+             RowBox[{
+              RowBox[{
+               RowBox[{"{", 
+                RowBox[{"uri", ",", "u\[Theta]i"}], "}"}], "/.", 
+               RowBox[{"{", 
+                RowBox[{"\[Infinity]", " ", "->", " ", "N"}], "}"}]}], "/.", 
+              "subN"}], "/.", 
+             RowBox[{"{", 
+              RowBox[{
+               RowBox[{"\[FormalR]", "->", "r"}], ",", 
+               RowBox[{"\[FormalT]", "->", "\[Theta]"}]}], "}"}]}], "]"}], "/.",
+            "subNoPressure"}], "/.", "subNoThermal"}], "/.", 
+         RowBox[{"Flatten", "[", "subsols", "]"}]}]}], ";", "\n", " ", 
+       RowBox[{"Return", "[", 
+        RowBox[{"{", 
+         RowBox[{"Nu\[CurlyPhi]", ",", "Nu\[CurlyTheta]", ",", "Nu\[Chi]"}], 
+         "}"}], "]"}]}]}], "\n", "]"}]}], ";"}], "\n"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{
+    RowBox[{"OutgoingTemperatures", "[", 
+     RowBox[{"subNo_", ",", "subNi_", ",", "\[Omega]_", ",", " ", 
+      RowBox[{"opts", ":", 
+       RowBox[{"OptionsPattern", "[", "]"}]}]}], "]"}], ":=", " ", "\n", 
+    RowBox[{"Module", "[", 
+     RowBox[{
+      RowBox[{"{", 
+       RowBox[{"subN", ",", "subsols", ",", " ", 
+        RowBox[{"N", " ", "=", " ", 
+         RowBox[{"OptionValue", "@", "\"\<LegendreOrder\>\""}]}], ",", 
+        "NT\[CurlyPhi]", ",", "NT\[CurlyTheta]", ",", "NT\[Chi]", ",", " ", 
+        "r", ",", " ", "\[Theta]"}], "}"}], ",", "\n", "  ", 
+      RowBox[{
+       RowBox[{
+        RowBox[{"{", 
+         RowBox[{"subsols", ",", "subN"}], "}"}], " ", "=", " ", 
+        RowBox[{"SolveSphericalBC", "[", 
+         RowBox[{"subNo", ",", "subNi", ",", "\[Omega]", ",", " ", 
+          RowBox[{"FilterRules", "[", 
+           RowBox[{
+            RowBox[{"{", "opts", "}"}], ",", " ", 
+            RowBox[{"Options", "[", "SolveSphericalBC", "]"}]}], "]"}]}], 
+         "]"}]}], ";", "\n", "\n", "  ", 
+       RowBox[{
+        RowBox[{"NT\[CurlyPhi]", "[", 
+         RowBox[{"r_", ",", "\[Theta]_"}], "]"}], " ", "=", " ", 
+        RowBox[{
+         RowBox[{
+          RowBox[{
+           RowBox[{"Activate", "[", 
+            RowBox[{
+             RowBox[{
+              RowBox[{"To", "/.", 
+               RowBox[{"{", 
+                RowBox[{"\[Infinity]", " ", "->", " ", "N"}], "}"}]}], "/.", 
+              "subN"}], "/.", 
+             RowBox[{"{", 
+              RowBox[{
+               RowBox[{"\[FormalR]", "->", "r"}], ",", 
+               RowBox[{"\[FormalT]", "->", "\[Theta]"}]}], "}"}]}], "]"}], "/.",
+            "subNoThermal"}], "/.", "subNoShear"}], "/.", 
+         RowBox[{"Flatten", "[", "subsols", "]"}]}]}], ";", "\n", "  ", 
+       RowBox[{
+        RowBox[{"NT\[CurlyTheta]", "[", 
+         RowBox[{"r_", ",", "\[Theta]_"}], "]"}], " ", "=", " ", 
+        RowBox[{
+         RowBox[{
+          RowBox[{
+           RowBox[{"Activate", "[", 
+            RowBox[{
+             RowBox[{
+              RowBox[{"To", "/.", 
+               RowBox[{"{", 
+                RowBox[{"\[Infinity]", " ", "->", " ", "N"}], "}"}]}], "/.", 
+              "subN"}], "/.", 
+             RowBox[{"{", 
+              RowBox[{
+               RowBox[{"\[FormalR]", "->", "r"}], ",", 
+               RowBox[{"\[FormalT]", "->", "\[Theta]"}]}], "}"}]}], "]"}], "/.",
+            "subNoPressure"}], "/.", "subNoShear"}], "/.", 
+         RowBox[{"Flatten", "[", "subsols", "]"}]}]}], ";", "\n", "  ", 
+       RowBox[{
+        RowBox[{"NT\[Chi]", "[", 
+         RowBox[{"r_", ",", "\[Theta]_"}], "]"}], " ", "=", " ", 
+        RowBox[{
+         RowBox[{
+          RowBox[{
+           RowBox[{"Activate", "[", 
+            RowBox[{
+             RowBox[{
+              RowBox[{"To", "/.", 
+               RowBox[{"{", 
+                RowBox[{"\[Infinity]", " ", "->", " ", "N"}], "}"}]}], "/.", 
+              "subN"}], "/.", 
+             RowBox[{"{", 
+              RowBox[{
+               RowBox[{"\[FormalR]", "->", "r"}], ",", 
+               RowBox[{"\[FormalT]", "->", "\[Theta]"}]}], "}"}]}], "]"}], "/.",
+            "subNoPressure"}], "/.", "subNoThermal"}], "/.", 
+         RowBox[{"Flatten", "[", "subsols", "]"}]}]}], ";", "\n", " ", 
+       RowBox[{"Return", "[", 
+        RowBox[{"{", 
+         RowBox[{"NT\[CurlyPhi]", ",", "NT\[CurlyTheta]", ",", "NT\[Chi]"}], 
+         "}"}], "]"}]}]}], "\n", "]"}]}], ";"}], "\n"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{
+    RowBox[{"OutgoingDisplacements", "[", 
+     RowBox[{"subNo_", ",", "subNi_", ",", "\[Omega]_", ",", " ", 
+      RowBox[{"opts", ":", 
+       RowBox[{"OptionsPattern", "[", "]"}]}]}], "]"}], ":=", " ", "\n", 
+    RowBox[{"Module", "[", 
+     RowBox[{
+      RowBox[{"{", 
+       RowBox[{"subN", ",", "subsols", ",", " ", 
+        RowBox[{"N", " ", "=", " ", 
+         RowBox[{"OptionValue", "@", "\"\<LegendreOrder\>\""}]}], ",", 
+        "Nu\[CurlyPhi]", ",", "Nu\[CurlyTheta]", ",", "Nu\[Chi]", ",", " ", 
+        "r", ",", " ", "\[Theta]"}], "}"}], ",", "\n", "  ", 
+      RowBox[{
+       RowBox[{
+        RowBox[{"{", 
+         RowBox[{"subsols", ",", "subN"}], "}"}], " ", "=", " ", 
+        RowBox[{"SolveSphericalBC", "[", 
+         RowBox[{"subNo", ",", "subNi", ",", "\[Omega]", ",", " ", 
+          RowBox[{"FilterRules", "[", 
+           RowBox[{
+            RowBox[{"{", "opts", "}"}], ",", " ", 
+            RowBox[{"Options", "[", "SolveSphericalBC", "]"}]}], "]"}]}], 
+         "]"}]}], ";", "\n", "\n", "  ", 
+       RowBox[{
+        RowBox[{"Nu\[CurlyPhi]", "[", 
+         RowBox[{"r_", ",", "\[Theta]_"}], "]"}], " ", "=", " ", 
+        RowBox[{
+         RowBox[{
+          RowBox[{
+           RowBox[{"Activate", "[", 
+            RowBox[{
+             RowBox[{
+              RowBox[{
+               RowBox[{"{", 
+                RowBox[{"uro", ",", "u\[Theta]o"}], "}"}], "/.", 
+               RowBox[{"{", 
+                RowBox[{"\[Infinity]", " ", "->", " ", "N"}], "}"}]}], "/.", 
+              "subN"}], "/.", 
+             RowBox[{"{", 
+              RowBox[{
+               RowBox[{"\[FormalR]", "->", "r"}], ",", 
+               RowBox[{"\[FormalT]", "->", "\[Theta]"}]}], "}"}]}], "]"}], "/.",
+            "subNoThermal"}], "/.", "subNoShear"}], "/.", 
+         RowBox[{"Flatten", "[", "subsols", "]"}]}]}], ";", "\n", "  ", 
+       RowBox[{
+        RowBox[{"Nu\[CurlyTheta]", "[", 
+         RowBox[{"r_", ",", "\[Theta]_"}], "]"}], " ", "=", " ", 
+        RowBox[{
+         RowBox[{
+          RowBox[{
+           RowBox[{"Activate", "[", 
+            RowBox[{
+             RowBox[{
+              RowBox[{
+               RowBox[{"{", 
+                RowBox[{"uro", ",", "u\[Theta]o"}], "}"}], "/.", 
+               RowBox[{"{", 
+                RowBox[{"\[Infinity]", " ", "->", " ", "N"}], "}"}]}], "/.", 
+              "subN"}], "/.", 
+             RowBox[{"{", 
+              RowBox[{
+               RowBox[{"\[FormalR]", "->", "r"}], ",", 
+               RowBox[{"\[FormalT]", "->", "\[Theta]"}]}], "}"}]}], "]"}], "/.",
+            "subNoPressure"}], "/.", "subNoShear"}], "/.", 
+         RowBox[{"Flatten", "[", "subsols", "]"}]}]}], ";", "\n", "  ", 
+       RowBox[{
+        RowBox[{"Nu\[Chi]", "[", 
+         RowBox[{"r_", ",", "\[Theta]_"}], "]"}], " ", "=", " ", 
+        RowBox[{
+         RowBox[{
+          RowBox[{
+           RowBox[{"Activate", "[", 
+            RowBox[{
+             RowBox[{
+              RowBox[{
+               RowBox[{"{", 
+                RowBox[{"uro", ",", "u\[Theta]o"}], "}"}], "/.", 
+               RowBox[{"{", 
+                RowBox[{"\[Infinity]", " ", "->", " ", "N"}], "}"}]}], "/.", 
+              "subN"}], "/.", 
+             RowBox[{"{", 
+              RowBox[{
+               RowBox[{"\[FormalR]", "->", "r"}], ",", 
+               RowBox[{"\[FormalT]", "->", "\[Theta]"}]}], "}"}]}], "]"}], "/.",
+            "subNoPressure"}], "/.", "subNoThermal"}], "/.", 
+         RowBox[{"Flatten", "[", "subsols", "]"}]}]}], ";", "\n", " ", 
+       RowBox[{"Return", "[", 
+        RowBox[{"{", 
+         RowBox[{"Nu\[CurlyPhi]", ",", "Nu\[CurlyTheta]", ",", "Nu\[Chi]"}], 
+         "}"}], "]"}]}]}], "\n", "]"}]}], ";"}], "\n"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{
+    RowBox[{"TotalDisplacement", "[", 
+     RowBox[{"subNo_", ",", "subNi_", ",", "\[Omega]_", ",", " ", 
+      RowBox[{"opts", ":", 
+       RowBox[{"OptionsPattern", "[", "]"}]}]}], "]"}], ":=", " ", "\n", 
+    RowBox[{"Module", "[", 
+     RowBox[{
+      RowBox[{"{", 
+       RowBox[{"subN", ",", "subsols", ",", " ", 
+        RowBox[{"N", " ", "=", " ", 
+         RowBox[{"OptionValue", "@", "\"\<LegendreOrder\>\""}]}], ",", " ", 
+        "Nu", ",", " ", "r", ",", " ", "\[Theta]"}], "}"}], ",", "\n", "  ", 
+      RowBox[{
+       RowBox[{
+        RowBox[{"{", 
+         RowBox[{"subsols", ",", "subN"}], "}"}], " ", "=", " ", 
+        RowBox[{"SolveSphericalBC", "[", 
+         RowBox[{"subNo", ",", "subNi", ",", "\[Omega]", ",", " ", 
+          RowBox[{"FilterRules", "[", 
+           RowBox[{
+            RowBox[{"{", "opts", "}"}], ",", " ", 
+            RowBox[{"Options", "[", "SolveSphericalBC", "]"}]}], "]"}]}], 
+         "]"}]}], ";", "\n", "  ", 
+       RowBox[{
+        RowBox[{"Nu", "[", 
+         RowBox[{"r_", ",", "\[Theta]_"}], "]"}], " ", "=", " ", 
+        RowBox[{
+         RowBox[{"Activate", "[", 
+          RowBox[{
+           RowBox[{
+            RowBox[{
+             RowBox[{
+              RowBox[{"{", 
+               RowBox[{"ur", ",", "u\[Theta]"}], "}"}], "/.", 
+              RowBox[{"{", 
+               RowBox[{"\[Infinity]", " ", "->", " ", "N"}], "}"}]}], "/.", 
+             "subN"}], "/.", 
+            RowBox[{"{", 
+             RowBox[{
+              RowBox[{"\[FormalR]", "->", "r"}], ",", 
+              RowBox[{"\[FormalT]", "->", "\[Theta]"}]}], "}"}]}], "/.", " ", 
+           
+           RowBox[{
+            RowBox[{"\[FormalCapitalA]", "[", 
+             RowBox[{
+             "\"\<\[CurlyPhi]0\>\"", ",", "\[FormalN]_", ",", "\"\<o\>\""}], 
+             "]"}], " ", "->", " ", 
+            RowBox[{
+             RowBox[{
+             "OptionValue", "[", 
+              "\"\<IncidentScatteringCoefficientFunction\>\"", "]"}], "[", 
+             "\[FormalN]", "]"}]}]}], "]"}], "/.", 
+         RowBox[{"Flatten", "[", "subsols", "]"}]}]}], ";", "\n", " ", 
+       RowBox[{"Return", "[", "Nu", "]"}]}]}], "\n", "]"}]}], ";"}], 
+  "\n"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{
+    RowBox[{"OutgoingPressure", "[", 
+     RowBox[{"subNo_", ",", "subNi_", ",", "\[Omega]_", ",", " ", 
+      RowBox[{"opts", ":", 
+       RowBox[{"OptionsPattern", "[", "]"}]}]}], "]"}], ":=", " ", "\n", 
+    RowBox[{"Module", "[", 
+     RowBox[{
+      RowBox[{"{", 
+       RowBox[{"subN", ",", "subsols", ",", " ", 
+        RowBox[{"N", " ", "=", " ", 
+         RowBox[{"OptionValue", "@", "\"\<LegendreOrder\>\""}]}], ",", "Np", 
+        ",", "Nu\[CurlyTheta]", ",", "Nu\[Chi]", ",", " ", "\[Theta]", ",", 
+        " ", "r"}], "}"}], ",", "\n", "  ", 
+      RowBox[{
+       RowBox[{
+        RowBox[{"{", 
+         RowBox[{"subsols", ",", "subN"}], "}"}], " ", "=", " ", 
+        RowBox[{"SolveSphericalBC", "[", 
+         RowBox[{"subNo", ",", "subNi", ",", "\[Omega]", ",", " ", 
+          RowBox[{"FilterRules", "[", 
+           RowBox[{
+            RowBox[{"{", "opts", "}"}], ",", " ", 
+            RowBox[{"Options", "[", "SolveSphericalBC", "]"}]}], "]"}]}], 
+         "]"}]}], ";", "\n", "  ", 
+       RowBox[{
+        RowBox[{"Np", "[", 
+         RowBox[{"r_", ",", "\[Theta]_"}], "]"}], " ", "=", " ", 
+        RowBox[{
+         RowBox[{
+          RowBox[{"Activate", "[", " ", 
+           RowBox[{
+            RowBox[{
+             RowBox[{
+              RowBox[{
+               RowBox[{
+                RowBox[{"-", 
+                 RowBox[{"(", 
+                  RowBox[{"\"\<\[Beta]o\>\"", "-", 
+                   RowBox[{
+                   "I", " ", "\"\<\[Eta]\[Beta]o\>\"", " ", "\[Omega]"}]}], 
+                  ")"}]}], 
+                RowBox[{"(", 
+                 RowBox[{
+                  RowBox[{
+                   RowBox[{"D", "[", 
+                    RowBox[{
+                    RowBox[{
+                    RowBox[{"\[FormalR]", "^", "2"}], " ", "uro"}], ",", 
+                    "\[FormalR]"}], "]"}], "/", 
+                   RowBox[{"\[FormalR]", "^", "2"}]}], " ", "\n", "      ", 
+                  "+", 
+                  RowBox[{
+                   RowBox[{"(", 
+                    RowBox[{
+                    "u\[Theta]o", "/.", "subLegendreDerivativeIdentity"}], 
+                    ")"}], "/", "\[FormalR]"}]}], ")"}]}], "+", 
+               RowBox[{"\"\<\[Alpha]o\>\"", "\"\<\[Beta]o\>\"", "To"}]}], "/.", 
+              RowBox[{"{", 
+               RowBox[{"\[Infinity]", " ", "->", " ", "N"}], "}"}]}], "/.", 
+             "subN"}], "/.", 
+            RowBox[{"{", 
+             RowBox[{
+              RowBox[{"\[FormalT]", "->", "\[Theta]"}], ",", 
+              RowBox[{"\[FormalR]", "->", "r"}]}], "}"}]}], "]"}], "/.", 
+          "subNoShear"}], "/.", 
+         RowBox[{"Flatten", "[", "subsols", "]"}]}]}], ";", "\n", " ", 
+       RowBox[{"Return", "[", "Np", "]"}]}]}], "\n", "]"}]}], ";"}], 
+  "\n"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"ScatteredPotentials", "[", 
+    RowBox[{"subNo_", ",", "subNi_", ",", "\[Omega]_", ",", " ", 
+     RowBox[{"opts", ":", 
+      RowBox[{"OptionsPattern", "[", "]"}]}]}], "]"}], ":=", " ", "\n", 
+   RowBox[{"Module", "[", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"subN", ",", "subsols", ",", " ", 
+       RowBox[{"N", " ", "=", " ", 
+        RowBox[{"OptionValue", "@", "\"\<LegendreOrder\>\""}]}], ",", "waves",
+        ",", " ", "\[Theta]", ",", " ", "r"}], "}"}], ",", "\n", "  ", 
+     RowBox[{
+      RowBox[{
+       RowBox[{"{", 
+        RowBox[{"subsols", ",", "subN"}], "}"}], " ", "=", " ", 
+       RowBox[{"SolveSphericalBC", "[", 
+        RowBox[{"subNo", ",", "subNi", ",", "\[Omega]", ",", " ", 
+         RowBox[{"FilterRules", "[", 
+          RowBox[{
+           RowBox[{"{", "opts", "}"}], ",", " ", 
+           RowBox[{"Options", "[", "SolveSphericalBC", "]"}]}], "]"}]}], 
+        "]"}]}], ";", "\n", "  ", 
+      RowBox[{
+       RowBox[{"waves", "[", 
+        RowBox[{"r_", ",", "\[Theta]_"}], "]"}], " ", "=", " ", 
+       RowBox[{
+        RowBox[{"Activate", "[", 
+         RowBox[{
+          RowBox[{
+           RowBox[{
+            RowBox[{"{", 
+             RowBox[{
+              RowBox[{"outgoingSeries", "[", "\"\<\[CurlyPhi]\>\"", "]"}], 
+              ",", 
+              RowBox[{"outgoingSeries", "[", "\"\<\[CurlyTheta]\>\"", "]"}], 
+              ",", 
+              RowBox[{"outgoingSeries", "[", "\"\<\[Chi]\>\"", "]"}]}], "}"}],
+             "/.", 
+            RowBox[{"{", 
+             RowBox[{"\[Infinity]", " ", "->", " ", "N"}], "}"}]}], "/.", 
+           "subN"}], "/.", 
+          RowBox[{"{", 
+           RowBox[{
+            RowBox[{"\[FormalT]", "->", "\[Theta]"}], ",", 
+            RowBox[{"\[FormalR]", "->", "r"}]}], "}"}]}], "]"}], "/.", 
+        RowBox[{"Flatten", "[", "subsols", "]"}]}]}], ";", "\n", " ", 
+      RowBox[{"Return", "[", "waves", "]"}]}]}], "\n", "]"}]}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"InternalPotentials", "[", 
+    RowBox[{"subNo_", ",", "subNi_", ",", "\[Omega]_", ",", " ", 
+     RowBox[{"opts", ":", 
+      RowBox[{"OptionsPattern", "[", "]"}]}]}], "]"}], ":=", " ", "\n", 
+   RowBox[{"Module", "[", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"subN", ",", "subsols", ",", " ", 
+       RowBox[{"N", " ", "=", " ", 
+        RowBox[{"OptionValue", "@", "\"\<LegendreOrder\>\""}]}], ",", "waves",
+        ",", " ", "\[Theta]", ",", " ", "r"}], "}"}], ",", "\n", "  ", 
+     RowBox[{
+      RowBox[{
+       RowBox[{"{", 
+        RowBox[{"subsols", ",", "subN"}], "}"}], " ", "=", " ", 
+       RowBox[{"SolveSphericalBC", "[", 
+        RowBox[{"subNo", ",", "subNi", ",", "\[Omega]", ",", " ", 
+         RowBox[{"FilterRules", "[", 
+          RowBox[{
+           RowBox[{"{", "opts", "}"}], ",", " ", 
+           RowBox[{"Options", "[", "SolveSphericalBC", "]"}]}], "]"}]}], 
+        "]"}]}], ";", "\n", "  ", 
+      RowBox[{
+       RowBox[{"waves", "[", 
+        RowBox[{"r_", ",", "\[Theta]_"}], "]"}], " ", "=", " ", 
+       RowBox[{
+        RowBox[{"Activate", "[", 
+         RowBox[{
+          RowBox[{
+           RowBox[{
+            RowBox[{"{", 
+             RowBox[{
+              RowBox[{"internalSeries", "[", "\"\<\[CurlyPhi]\>\"", "]"}], 
+              ",", 
+              RowBox[{"internalSeries", "[", "\"\<\[CurlyTheta]\>\"", "]"}], 
+              ",", 
+              RowBox[{"internalSeries", "[", "\"\<\[Chi]\>\"", "]"}]}], "}"}],
+             "/.", 
+            RowBox[{"{", 
+             RowBox[{"\[Infinity]", " ", "->", " ", "N"}], "}"}]}], "/.", 
+           "subN"}], "/.", 
+          RowBox[{"{", 
+           RowBox[{
+            RowBox[{"\[FormalT]", "->", "\[Theta]"}], ",", 
+            RowBox[{"\[FormalR]", "->", "r"}]}], "}"}]}], "]"}], "/.", 
+        RowBox[{"Flatten", "[", "subsols", "]"}]}]}], ";", "\n", " ", 
+      RowBox[{"Return", "[", "waves", "]"}]}]}], "\n", "]"}]}], 
+  ";"}]}], "Code",
+ FontWeight->"Bold"],
+
+Cell[BoxData[""], "Code",
+ InitializationCell->False,
+ FontWeight->"Bold"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"subNQ", " ", "=", " ", 
+   RowBox[{
+    RowBox[{"(", 
+     RowBox[{
+      RowBox[{
+       RowBox[{"Head", "@", "#"}], " ", "==", " ", "List"}], " ", "&&", " ", 
+      RowBox[{
+       RowBox[{"Head", "[", 
+        RowBox[{"#", "[", 
+         RowBox[{"[", "1", "]"}], "]"}], "]"}], " ", "==", " ", "Rule"}]}], 
+     ")"}], "&"}]}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{
+    RowBox[{"SolveSphericalBC", "[", 
+     RowBox[{
+      RowBox[{"subNo_", "?", "subNQ"}], ",", " ", 
+      RowBox[{"subNi_", "?", "subNQ"}], ",", " ", "\[Omega]_", ",", " ", 
+      RowBox[{"opts", ":", 
+       RowBox[{"OptionsPattern", "[", "]"}]}]}], "]"}], ":=", " ", "\n", 
+    RowBox[{"Module", "[", 
+     RowBox[{
+      RowBox[{"{", 
+       RowBox[{
+        RowBox[{"precision", " ", "=", " ", 
+         RowBox[{"Max", "[", 
+          RowBox[{
+           RowBox[{"OptionValue", "@", "WorkingPrecision"}], ",", " ", 
+           RowBox[{"Precision", "@", "subNo"}]}], "]"}]}], ",", " ", "\n", 
+        "subno", ",", " ", "subni", ",", " ", "rng\[Omega]", ",", " ", 
+        "TW\[CurlyPhi]", ",", "TW\[CurlyTheta]", ",", "TW\[Psi]", ",", 
+        "TWi\[CurlyPhi]", ",", "TWi\[CurlyTheta]", ",", "TWi\[Psi]"}], "}"}], 
+      ",", "\n", "\n", "  ", 
+      RowBox[{
+       RowBox[{"subno", " ", "=", " ", 
+        RowBox[{"SetPrecision", "[", 
+         RowBox[{
+          RowBox[{"AddToNsub", "@", "subNo"}], ",", "precision"}], "]"}]}], 
+       ";", "\n", "  ", 
+       RowBox[{"subni", " ", "=", " ", 
+        RowBox[{"SetPrecision", "[", 
+         RowBox[{
+          RowBox[{"AddToNsub", "@", "subNi"}], ",", "precision"}], "]"}]}], 
+       ";", "\n", "\n", "  ", 
+       RowBox[{
+        RowBox[{"{", 
+         RowBox[{"TW\[CurlyPhi]", ",", "TW\[CurlyTheta]"}], "}"}], " ", "=", 
+        " ", 
+        RowBox[{"ThermalPotentials", "[", 
+         RowBox[{"subno", ",", 
+          RowBox[{"{", "\[Omega]", "}"}]}], "]"}]}], ";", "\n", "  ", 
+       RowBox[{"TW\[Psi]", " ", "=", " ", 
+        RowBox[{"ShearPotential", "[", 
+         RowBox[{"subno", ",", 
+          RowBox[{"{", "\[Omega]", "}"}]}], "]"}]}], ";", "\n", " ", "\n", 
+       "  ", 
+       RowBox[{
+        RowBox[{"{", 
+         RowBox[{"TWi\[CurlyPhi]", ",", "TWi\[CurlyTheta]"}], "}"}], " ", "=",
+         " ", 
+        RowBox[{"ThermalPotentials", "[", 
+         RowBox[{"subni", ",", 
+          RowBox[{"{", "\[Omega]", "}"}]}], "]"}]}], ";", "\n", "  ", 
+       RowBox[{"TWi\[Psi]", " ", "=", " ", 
+        RowBox[{"ShearPotential", "[", 
+         RowBox[{"subni", ",", 
+          RowBox[{"{", "\[Omega]", "}"}]}], "]"}]}], ";", "\n", "  ", "\n", 
+       "  ", 
+       RowBox[{"Return", "[", 
+        RowBox[{"SolveSphericalBC", "[", 
+         RowBox[{
+          RowBox[{"{", 
+           RowBox[{"TW\[CurlyPhi]", ",", "TW\[CurlyTheta]", ",", "TW\[Psi]"}],
+            "}"}], ",", 
+          RowBox[{"{", 
+           RowBox[{
+           "TWi\[CurlyPhi]", ",", "TWi\[CurlyTheta]", ",", "TWi\[Psi]"}], 
+           "}"}], ",", "opts"}], "]"}], "]"}]}]}], "\n", "]"}]}], ";"}], " ", 
+  "\n"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"SolveSphericalBC", "[", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{
+       RowBox[{"TW\[CurlyPhi]", ":", 
+        RowBox[{"(", 
+         RowBox[{"_", "?", "AssociationQ"}], ")"}], ":", "emptyTW"}], ",", 
+       RowBox[{"TW\[CurlyTheta]_:", "emptyTW"}], ",", 
+       RowBox[{"TW\[Psi]_:", "emptyTW"}]}], "}"}], ",", "\n", 
+     "                 ", 
+     RowBox[{"{", 
+      RowBox[{
+       RowBox[{"TWi\[CurlyPhi]", ":", 
+        RowBox[{"(", 
+         RowBox[{"_", "?", "AssociationQ"}], ")"}], ":", "emptyTW"}], ",", 
+       RowBox[{"TWi\[CurlyTheta]_:", "emptyTW"}], ",", 
+       RowBox[{"TWi\[Psi]_:", "emptyTW"}]}], "}"}], "\n", "                 ",
+      ",", 
+     RowBox[{"opts", ":", 
+      RowBox[{"OptionsPattern", "[", "]"}]}]}], "]"}], ":=", " ", "\n", 
+   RowBox[{"Module", "[", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{
+      "subN", ",", "\[Omega]", ",", "subNo", ",", "subNi", ",", "subsols", 
+       ",", " ", "subincidentPlanewave", ",", " ", "n", ",", " ", "residuals",
+        ",", " ", "Nb", ",", " ", "NM", ",", "\n", "        ", 
+       RowBox[{"NN", " ", "=", " ", 
+        RowBox[{"OptionValue", "@", "\"\<LegendreOrder\>\""}]}], " ", ",", 
+       " ", "a0", ",", " ", "Ncoefs", ",", " ", "undeterminedAs", ",", " ", 
+       "subAs", ",", "\n", "        ", 
+       RowBox[{"precision", " ", "=", " ", 
+        RowBox[{"OptionValue", "@", "WorkingPrecision"}]}]}], "}"}], ",", 
+     "\n", " ", "\n", "  ", 
+     RowBox[{
+      RowBox[{"If", "[", 
+       RowBox[{
+        RowBox[{
+         RowBox[{"Precision", "[", 
+          RowBox[{"\"\<\[Mu]\>\"", "/.", 
+           RowBox[{"TW\[CurlyPhi]", "[", "\"\<parameters\>\"", "]"}]}], "]"}],
+          " ", ">", " ", "precision"}], ",", " ", 
+        RowBox[{"precision", " ", "=", " ", 
+         RowBox[{"Precision", "[", 
+          RowBox[{"\"\<\[Mu]\>\"", "/.", 
+           RowBox[{"TW\[CurlyPhi]", "[", "\"\<parameters\>\"", "]"}]}], 
+          "]"}]}]}], "]"}], ";", "\n", "  ", 
+      RowBox[{"a0", " ", "=", " ", 
+       RowBox[{"SetPrecision", "[", 
+        RowBox[{
+         RowBox[{"OptionValue", "@", "\"\<radius\>\""}], ",", " ", 
+         "precision"}], "]"}]}], ";", "\n", "  ", 
+      RowBox[{"subincidentPlanewave", "=", " ", 
+       RowBox[{"{", 
+        RowBox[{
+         RowBox[{"\[FormalCapitalA]", "[", 
+          RowBox[{"\"\<\[CurlyPhi]0\>\"", ",", "n_", ",", "\"\<o\>\""}], 
+          "]"}], " ", ":>", " ", 
+         RowBox[{
+          RowBox[{
+          "OptionValue", "[", "\"\<IncidentScatteringCoefficientFunction\>\"",
+            "]"}], "[", "n", "]"}]}], "}"}]}], ";", "\n", "\n", "   ", 
+      RowBox[{"\[Omega]", " ", "=", " ", 
+       RowBox[{
+        RowBox[{"TW\[CurlyPhi]", "[", "\"\<rng\[Omega]\>\"", "]"}], "[", 
+        RowBox[{"[", "1", "]"}], "]"}]}], ";", "\n", "   ", 
+      RowBox[{"subN", " ", "=", " ", 
+       RowBox[{
+        RowBox[{"{", 
+         RowBox[{"\"\<radius\>\"", "->", "a0"}], "}"}], "~", "Join", "~", 
+        RowBox[{"TWsTosubParameters", "[", 
+         RowBox[{
+          RowBox[{"{", 
+           RowBox[{"TW\[CurlyPhi]", ",", "TW\[CurlyTheta]", ",", "TW\[Psi]"}],
+            "}"}], ",", 
+          RowBox[{"{", 
+           RowBox[{
+           "TWi\[CurlyPhi]", ",", "TWi\[CurlyTheta]", ",", "TWi\[Psi]"}], 
+           "}"}]}], "]"}]}]}], ";", "\n", "\n", "   ", 
+      RowBox[{"NM", " ", "=", " ", 
+       RowBox[{"M", "/.", "subN"}]}], ";", "\n", "   ", 
+      RowBox[{"Nb", " ", "=", " ", 
+       RowBox[{
+        RowBox[{"b", "/.", "subN"}], "/.", "subincidentPlanewave"}]}], ";", 
+      "\n", "\n", "   ", 
+      RowBox[{"subsols", " ", "=", " ", 
+       RowBox[{
+        RowBox[{
+         RowBox[{"With", "[", 
+          RowBox[{
+           RowBox[{"{", 
+            RowBox[{
+             RowBox[{"cs", " ", "=", " ", 
+              RowBox[{"coefs", "/.", 
+               RowBox[{"\[FormalM]", "->", "#"}]}]}], ",", " ", 
+             RowBox[{"eqs", " ", "=", 
+              RowBox[{
+               RowBox[{"Thread", "[", 
+                RowBox[{
+                 RowBox[{
+                  RowBox[{"NM", ".", "coefs"}], " ", "+", " ", "Nb"}], " ", "==",
+                  " ", "0"}], "]"}], "/.", 
+               RowBox[{"\[FormalM]", "->", "#"}]}]}]}], "}"}], ",", " ", "\n",
+            "      ", 
+           RowBox[{"NSolve", "[", 
+            RowBox[{"eqs", ",", " ", "cs", ",", " ", 
+             RowBox[{"WorkingPrecision", " ", "->", " ", "precision"}]}], 
+            "]"}]}], "\n", "   ", "]"}], "&"}], "/@", 
+        RowBox[{"Range", "[", 
+         RowBox[{"0", ",", "NN"}], "]"}]}]}], ";", "\n", "\n", "   ", 
+      RowBox[{"undeterminedAs", " ", "=", " ", 
+       RowBox[{"Union", "@", 
+        RowBox[{"Cases", "[", 
+         RowBox[{
+          RowBox[{
+           RowBox[{"Transpose", "[", 
+            RowBox[{
+             RowBox[{"Flatten", "[", "subsols", "]"}], "/.", 
+             RowBox[{"Rule", "->", " ", "List"}]}], "]"}], "[", 
+           RowBox[{"[", "2", "]"}], "]"}], ",", 
+          RowBox[{"_", " ", "\[FormalCapitalA]"}], ",", "\[Infinity]"}], 
+         "]"}]}]}], ";", "\n", "   ", 
+      RowBox[{"If", "[", 
+       RowBox[{
+        RowBox[{
+         RowBox[{"Length", "@", "undeterminedAs"}], " ", ">", " ", "0"}], ",",
+         " ", "\n", "     ", 
+        RowBox[{
+         RowBox[{"Ncoefs", " ", "=", " ", 
+          RowBox[{
+           RowBox[{
+            RowBox[{"coefs", "/.", 
+             RowBox[{"\[FormalM]", "->", "#"}]}], "&"}], "/@", 
+           RowBox[{"Range", "[", 
+            RowBox[{"0", ",", "NN"}], "]"}]}]}], ";", "\n", "     ", 
+         RowBox[{"undeterminedAs", " ", "=", " ", 
+          RowBox[{"Union", "[", 
+           RowBox[{"undeterminedAs", ",", 
+            RowBox[{"Flatten", "@", 
+             RowBox[{"Cases", "[", 
+              RowBox[{
+               RowBox[{"Ncoefs", "/.", 
+                RowBox[{"Flatten", "@", "subsols"}]}], ",", 
+               RowBox[{"_", " ", "\[FormalCapitalA]"}], ",", "\[Infinity]"}], 
+              "]"}]}]}], "]"}]}], ";", "   ", "\n", "     ", 
+         RowBox[{"If", "[", " ", 
+          RowBox[{
+           RowBox[{"OptionValue", "[", "\"\<Verbose\>\"", "]"}], ",", "\n", 
+           "         ", 
+           RowBox[{"Print", "[", 
+            RowBox[{
+            "\"\<Will take the coefficients below to be zero, as they could \
+not determined from the boundary conditions: \\n\>\"", ",", " ", 
+             "undeterminedAs"}], "]"}]}], "\n", "     ", "]"}], ";", "    ", 
+         "\n", "     ", 
+         RowBox[{"subAs", " ", "=", " ", 
+          RowBox[{"Thread", "[", 
+           RowBox[{"undeterminedAs", " ", "->", " ", "0"}], "]"}]}], ";", 
+         "\n", "     ", 
+         RowBox[{"subsols", " ", "=", " ", 
+          RowBox[{
+           RowBox[{"(", 
+            RowBox[{"subsols", "/.", "subAs"}], ")"}], "~", "Join", "~", 
+           "subAs"}]}], ";"}]}], "\n", "   ", "]"}], ";", "\n", "\n", "   ", 
+      RowBox[{"(*", 
+       RowBox[{
+        RowBox[{"residuals", " ", "=", " ", 
+         RowBox[{
+          RowBox[{
+           RowBox[{"(", 
+            RowBox[{
+             RowBox[{"Norm", "[", 
+              RowBox[{
+               RowBox[{
+                RowBox[{
+                 RowBox[{
+                  RowBox[{"NM", ".", "coefs"}], " ", "+", " ", "Nb"}], "/.", 
+                 RowBox[{"m", "->", "#"}]}], "/.", 
+                RowBox[{"Flatten", "[", 
+                 RowBox[{"subsols", "[", 
+                  RowBox[{"[", 
+                   RowBox[{"#", "+", "1"}], "]"}], "]"}], "]"}]}], "/.", 
+               "subAs"}], "]"}], "/", 
+             RowBox[{"Norm", "[", 
+              RowBox[{"Nb", "/.", 
+               RowBox[{"m", "->", "#"}]}], "]"}]}], ")"}], " ", "&"}], "/@", 
+          RowBox[{"Range", "[", 
+           RowBox[{"0", ",", "NN"}], "]"}]}]}], ";"}], "*)"}], "\n", "   ", 
+      RowBox[{"residuals", " ", "=", " ", 
+       RowBox[{
+        RowBox[{
+         RowBox[{"(", 
+          RowBox[{
+           RowBox[{"Norm", "[", 
+            RowBox[{
+             RowBox[{
+              RowBox[{
+               RowBox[{"NM", ".", "coefs"}], " ", "+", " ", "Nb"}], "/.", 
+              RowBox[{"\[FormalM]", "->", "#"}]}], "/.", 
+             RowBox[{"Flatten", "[", "subsols", "]"}]}], "]"}], "/", 
+           RowBox[{"Norm", "[", 
+            RowBox[{"Nb", "/.", 
+             RowBox[{"\[FormalM]", "->", "#"}]}], "]"}]}], ")"}], " ", "&"}], 
+        "/@", 
+        RowBox[{"Range", "[", 
+         RowBox[{"0", ",", "NN"}], "]"}]}]}], ";", "\n", "   ", 
+      RowBox[{"If", "[", " ", 
+       RowBox[{
+        RowBox[{
+         RowBox[{"OptionValue", "[", "\"\<Verbose\>\"", "]"}], " ", "||", " ", 
+         RowBox[{
+          RowBox[{"Norm", "[", "residuals", "]"}], ">", 
+          RowBox[{"10", "^", 
+           RowBox[{"-", "6"}]}]}]}], ",", "\n", "       ", 
+        RowBox[{"Print", "[", 
+         RowBox[{
+         "\"\<Relative residuals of the boundary condition system ( each \
+residual corresponds to one of the Legendre Polynomial)  = \\n\>\"", ",", 
+          "residuals"}], "]"}]}], "\n", "       ", 
+       RowBox[{"(*", 
+        RowBox[{
+         RowBox[{"Print", "[", 
+          RowBox[{
+          "\"\<The condition numbers of the system cond(M)= \\n\>\"", ",", 
+           RowBox[{
+            RowBox[{
+             RowBox[{"LinearAlgebra`MatrixConditionNumber", "[", 
+              RowBox[{"NM", "/.", 
+               RowBox[{"m", "->", "#"}]}], "]"}], "&"}], "/@", 
+            RowBox[{"Range", "[", 
+             RowBox[{"0", ",", "NN"}], "]"}]}]}], "]"}], ";"}], "*)"}], "\n", 
+       "   ", "]"}], ";", "\n", "   ", "\n", " ", 
+      RowBox[{"Return", "[", 
+       RowBox[{"{", 
+        RowBox[{"subsols", ",", "subN"}], "}"}], "]"}]}]}], "\n", "]"}]}], 
+  ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"TWsTosubParameters", "[", 
+    RowBox[{"TWos_", ",", "TWis_"}], "]"}], " ", ":=", " ", 
+   RowBox[{"(", "\n", "    ", 
+    RowBox[{
+     RowBox[{"{", "\n", "    ", 
+      RowBox[{
+       RowBox[{
+        RowBox[{"\[FormalK]", "[", 
+         RowBox[{"\"\<\[CurlyPhi]\>\"", ",", "\"\<o\>\""}], "]"}], "->", " ", 
+        
+        RowBox[{
+         RowBox[{
+          RowBox[{"TWos", "[", 
+           RowBox[{"[", "1", "]"}], "]"}], "[", "\"\<WaveNumbers\>\"", "]"}], 
+         "[", 
+         RowBox[{"[", "1", "]"}], "]"}]}], ",", " ", 
+       RowBox[{
+        RowBox[{"\[FormalK]", "[", 
+         RowBox[{"\"\<\[CurlyTheta]\>\"", ",", "\"\<o\>\""}], "]"}], "->", 
+        " ", 
+        RowBox[{
+         RowBox[{
+          RowBox[{"TWos", "[", 
+           RowBox[{"[", "2", "]"}], "]"}], "[", "\"\<WaveNumbers\>\"", "]"}], 
+         "[", 
+         RowBox[{"[", "1", "]"}], "]"}]}], ",", " ", 
+       RowBox[{
+        RowBox[{"\[FormalK]", "[", 
+         RowBox[{"\"\<\[Chi]\>\"", ",", "\"\<o\>\""}], "]"}], "->", " ", 
+        RowBox[{
+         RowBox[{
+          RowBox[{"TWos", "[", 
+           RowBox[{"[", "3", "]"}], "]"}], "[", "\"\<WaveNumbers\>\"", "]"}], 
+         "[", 
+         RowBox[{"[", "1", "]"}], "]"}]}], ",", "\n", "    ", 
+       RowBox[{"\"\<T\[CurlyPhi]o\>\"", " ", "->", " ", 
+        RowBox[{
+         RowBox[{
+          RowBox[{"TWos", "[", 
+           RowBox[{"[", "1", "]"}], "]"}], "[", "\"\<WaveModes\>\"", "]"}], 
+         "[", 
+         RowBox[{"[", 
+          RowBox[{"1", ",", "2"}], "]"}], "]"}]}], ",", " ", 
+       RowBox[{"\"\<T\[CurlyTheta]o\>\"", " ", "->", " ", 
+        RowBox[{
+         RowBox[{
+          RowBox[{"TWos", "[", 
+           RowBox[{"[", "2", "]"}], "]"}], "[", "\"\<WaveModes\>\"", "]"}], 
+         "[", 
+         RowBox[{"[", 
+          RowBox[{"1", ",", "2"}], "]"}], "]"}]}], ",", " ", "\n", "    ", 
+       RowBox[{"\"\<U\[CurlyPhi]o\>\"", " ", "->", " ", 
+        RowBox[{
+         RowBox[{
+          RowBox[{"TWos", "[", 
+           RowBox[{"[", "1", "]"}], "]"}], "[", "\"\<WaveModes\>\"", "]"}], 
+         "[", 
+         RowBox[{"[", 
+          RowBox[{"1", ",", "1"}], "]"}], "]"}]}], ",", " ", 
+       RowBox[{"\"\<U\[CurlyTheta]o\>\"", " ", "->", " ", 
+        RowBox[{
+         RowBox[{
+          RowBox[{"TWos", "[", 
+           RowBox[{"[", "2", "]"}], "]"}], "[", "\"\<WaveModes\>\"", "]"}], 
+         "[", 
+         RowBox[{"[", 
+          RowBox[{"1", ",", "1"}], "]"}], "]"}]}], ",", "\n", "    ", 
+       RowBox[{
+        RowBox[{"\[FormalK]", "[", 
+         RowBox[{"\"\<\[CurlyPhi]\>\"", ",", "\"\<i\>\""}], "]"}], "->", " ", 
+        
+        RowBox[{
+         RowBox[{
+          RowBox[{"TWis", "[", 
+           RowBox[{"[", "1", "]"}], "]"}], "[", "\"\<WaveNumbers\>\"", "]"}], 
+         "[", 
+         RowBox[{"[", "1", "]"}], "]"}]}], ",", " ", 
+       RowBox[{
+        RowBox[{"\[FormalK]", "[", 
+         RowBox[{"\"\<\[CurlyTheta]\>\"", ",", "\"\<i\>\""}], "]"}], "->", 
+        " ", 
+        RowBox[{
+         RowBox[{
+          RowBox[{"TWis", "[", 
+           RowBox[{"[", "2", "]"}], "]"}], "[", "\"\<WaveNumbers\>\"", "]"}], 
+         "[", 
+         RowBox[{"[", "1", "]"}], "]"}]}], ",", " ", 
+       RowBox[{
+        RowBox[{"\[FormalK]", "[", 
+         RowBox[{"\"\<\[Chi]\>\"", ",", "\"\<i\>\""}], "]"}], "->", " ", 
+        RowBox[{
+         RowBox[{
+          RowBox[{"TWis", "[", 
+           RowBox[{"[", "3", "]"}], "]"}], "[", "\"\<WaveNumbers\>\"", "]"}], 
+         "[", 
+         RowBox[{"[", "1", "]"}], "]"}]}], ",", "\n", "    ", 
+       RowBox[{"\"\<T\[CurlyPhi]i\>\"", " ", "->", " ", 
+        RowBox[{
+         RowBox[{
+          RowBox[{"TWis", "[", 
+           RowBox[{"[", "1", "]"}], "]"}], "[", "\"\<WaveModes\>\"", "]"}], 
+         "[", 
+         RowBox[{"[", 
+          RowBox[{"1", ",", "2"}], "]"}], "]"}]}], ",", " ", 
+       RowBox[{"\"\<T\[CurlyTheta]i\>\"", " ", "->", " ", 
+        RowBox[{
+         RowBox[{
+          RowBox[{"TWis", "[", 
+           RowBox[{"[", "2", "]"}], "]"}], "[", "\"\<WaveModes\>\"", "]"}], 
+         "[", 
+         RowBox[{"[", 
+          RowBox[{"1", ",", "2"}], "]"}], "]"}]}], ",", "\n", "    ", 
+       RowBox[{"\"\<U\[CurlyPhi]i\>\"", " ", "->", " ", 
+        RowBox[{
+         RowBox[{
+          RowBox[{"TWis", "[", 
+           RowBox[{"[", "1", "]"}], "]"}], "[", "\"\<WaveModes\>\"", "]"}], 
+         "[", 
+         RowBox[{"[", 
+          RowBox[{"1", ",", "1"}], "]"}], "]"}]}], ",", " ", 
+       RowBox[{"\"\<U\[CurlyTheta]i\>\"", " ", "->", " ", 
+        RowBox[{
+         RowBox[{
+          RowBox[{"TWis", "[", 
+           RowBox[{"[", "2", "]"}], "]"}], "[", "\"\<WaveModes\>\"", "]"}], 
+         "[", 
+         RowBox[{"[", 
+          RowBox[{"1", ",", "1"}], "]"}], "]"}]}]}], "\n", "  ", "}"}], "~", 
+     "Join", "~", 
+     RowBox[{"(", 
+      RowBox[{
+       RowBox[{
+        RowBox[{"TWos", "[", 
+         RowBox[{"[", "1", "]"}], "]"}], "[", "\"\<parameters\>\"", "]"}], "/.", 
+       RowBox[{"subNto", "[", "\"\<o\>\"", "]"}]}], ")"}], "~", "Join", "~", 
+     RowBox[{"(", 
+      RowBox[{
+       RowBox[{
+        RowBox[{"TWis", "[", 
+         RowBox[{"[", "1", "]"}], "]"}], "[", "\"\<parameters\>\"", "]"}], "/.", 
+       RowBox[{"subNto", "[", "\"\<i\>\"", "]"}]}], ")"}]}], "\n", ")"}]}], 
+  ";"}]}], "Code",
+ FontWeight->"Bold"],
+
+Cell[BoxData[
+ RowBox[{" ", 
+  RowBox[{
+   RowBox[{"To", " ", "check", " ", "identities"}], ",", " ", 
+   RowBox[{
+   "see", " ", "section", " ", "Test", " ", "identities", " ", "at", " ", 
+    "the", " ", "end", " ", "of", " ", "this", " ", "document"}]}]}]], "Code",\
+
+ InitializationCell->False,
+ FontWeight->"Bold"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{
+   RowBox[{"subLegendreDerivativeIdentity", " ", "=", " ", 
+    RowBox[{"{", 
+     RowBox[{
+      RowBox[{"LegendreP", "[", 
+       RowBox[{"\[FormalM]_", ",", "1", ",", 
+        RowBox[{"Cos", "[", "\[FormalT]", "]"}]}], "]"}], "->", " ", 
+      RowBox[{
+       RowBox[{"-", "\[FormalM]"}], 
+       RowBox[{"(", 
+        RowBox[{"\[FormalM]", "+", "1"}], ")"}], 
+       RowBox[{"LegendreP", "[", 
+        RowBox[{"\[FormalM]", ",", 
+         RowBox[{"Cos", "[", "\[FormalT]", "]"}]}], "]"}]}]}], "}"}]}], " ", 
+   ";"}], "\n", 
+  RowBox[{"(*", 
+   RowBox[{
+   "Applies", " ", "the", " ", "derivative", " ", "and", " ", "then", " ", 
+    "subsitutes", " ", "the", " ", "identity", " ", "Eq", " ", 
+    RowBox[{"(", "1.28", ")"}], " ", "in", " ", 
+    RowBox[{"SphereScattering", ".", "pdf"}]}], "*)"}], " ", "\n"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"DifferentiateTheta", "::", "\[Theta]Dependance"}], "=", 
+   "\"\<The argument `1` should only depend on \[Theta] through terms of the \
+form LegendreP[m,Cos[\[Theta]]].\>\""}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{
+    RowBox[{"DifferentiateTheta", "[", "s_", "]"}], " ", ":=", " ", 
+    RowBox[{"(", "\n", "    ", 
+     RowBox[{
+      RowBox[{"If", "[", " ", 
+       RowBox[{
+        RowBox[{
+         RowBox[{"(", 
+          RowBox[{
+           RowBox[{
+            RowBox[{"s", "/.", 
+             RowBox[{
+              RowBox[{"LegendreP", "[", 
+               RowBox[{"\[FormalM]_", ",", 
+                RowBox[{"Cos", "[", "\[FormalT]", "]"}]}], "]"}], "->", 
+              RowBox[{"\[FormalL]", "[", "\[FormalM]", "]"}]}]}], "/.", 
+            RowBox[{"\[FormalT]", "->", " ", 
+             RowBox[{"RandomReal", "[", "\[Pi]", "]"}]}]}], "/.", 
+           RowBox[{
+            RowBox[{"\[FormalL]", "[", "\[FormalM]_", "]"}], "->", 
+            RowBox[{"LegendreP", "[", 
+             RowBox[{"\[FormalM]", ",", 
+              RowBox[{"Cos", "[", "\[FormalT]", "]"}]}], "]"}]}]}], " ", 
+          ")"}], "=!=", " ", "s"}], ",", " ", 
+        RowBox[{"Message", "[", 
+         RowBox[{
+          RowBox[{"DifferentiateTheta", "::", "\[Theta]Dependance"}], ",", 
+          "s"}], "]"}]}], "]"}], ";", "\n", "    ", 
+      RowBox[{"s", "/.", 
+       RowBox[{"{", 
+        RowBox[{
+         RowBox[{"LegendreP", "[", 
+          RowBox[{"\[FormalM]_", ",", 
+           RowBox[{"Cos", "[", "\[FormalT]", "]"}]}], "]"}], "->", " ", 
+         RowBox[{"LegendreP", "[", 
+          RowBox[{"\[FormalM]", ",", "1", ",", 
+           RowBox[{"Cos", "[", "\[FormalT]", "]"}]}], "]"}]}], "}"}]}]}], 
+     "\n", ")"}]}], ";"}], "\n", 
+  RowBox[{"(*", " ", 
+   RowBox[{
+    RowBox[{
+    "Assumes", " ", "the", " ", "only", " ", "\[Theta]", " ", "dependance", 
+     " ", "is", " ", "through", " ", 
+     RowBox[{"LegendreP", "[", 
+      RowBox[{"m", ",", 
+       RowBox[{"Cos", "[", "\[Theta]", "]"}]}], "]"}]}], ",", " ", 
+    RowBox[{
+     RowBox[{
+      RowBox[{"and", " ", "substitutes", " ", 
+       RowBox[{"LegendreP", "[", 
+        RowBox[{"m", ",", 
+         RowBox[{"Cos", "[", "\[Theta]", "]"}]}], "]"}]}], " ", "\[Rule]", 
+      " ", 
+      RowBox[{"D", "[", 
+       RowBox[{
+        RowBox[{"LegendreP", "[", 
+         RowBox[{"m", ",", 
+          RowBox[{"Cos", "[", "\[Theta]", "]"}]}], "]"}], ",", "\[Theta]"}], 
+       "]"}]}], " ", "=", " ", 
+     RowBox[{"LegendreP", "[", 
+      RowBox[{"m", ",", "1", ",", 
+       RowBox[{"Cos", "[", "\[Theta]", "]"}]}], "]"}]}]}], "*)"}], " ", 
+  "\n"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"DivideByLegendreP", "::", "PDependance"}], "=", 
+   "\"\<The argument `1` be LegendreP[n_,Cos[\[Theta]]] times \
+something.\>\""}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{
+    RowBox[{"DivideByLegendreP", "[", "s_", "]"}], " ", ":=", " ", 
+    RowBox[{"Module", "[", 
+     RowBox[{
+      RowBox[{"{", 
+       RowBox[{
+       "m", ",", "i", ",", "n", ",", "j", ",", "legendre", ",", "list"}], 
+       "}"}], ",", "\n", "  ", 
+      RowBox[{
+       RowBox[{"list", " ", "=", " ", 
+        RowBox[{
+         RowBox[{"Cases", "[", 
+          RowBox[{"s", ",", " ", 
+           RowBox[{
+            RowBox[{"(", 
+             RowBox[{"LegendreP", "[", 
+              RowBox[{"n_", ",", 
+               RowBox[{"Cos", "[", "\[FormalT]", "]"}]}], "]"}], ")"}], "->", 
+            
+            RowBox[{"{", 
+             RowBox[{"n", ",", "0"}], "}"}]}], ",", "\[Infinity]"}], "]"}], 
+         "\[Union]", 
+         RowBox[{"Cases", "[", 
+          RowBox[{"s", ",", " ", 
+           RowBox[{
+            RowBox[{"LegendreP", "[", 
+             RowBox[{"n_", ",", "j_", ",", 
+              RowBox[{"Cos", "[", "\[FormalT]", "]"}]}], "]"}], "->", " ", 
+            RowBox[{"{", 
+             RowBox[{"n", ",", "j"}], "}"}]}], ",", "\[Infinity]"}], 
+          "]"}]}]}], " ", ";", "\n", "  ", 
+       RowBox[{"If", "[", 
+        RowBox[{
+         RowBox[{
+          RowBox[{"Length", "[", "list", "]"}], ">", "1"}], ",", "  ", 
+         RowBox[{"Message", "[", 
+          RowBox[{
+           RowBox[{"DivideByLegendreP", "::", "PDependance"}], ",", "s"}], 
+          "]"}]}], "]"}], ";", "\n", "  ", 
+       RowBox[{"legendre", " ", "=", " ", 
+        RowBox[{"LegendreP", "[", " ", 
+         RowBox[{
+          RowBox[{"list", "[", 
+           RowBox[{"[", 
+            RowBox[{"1", ",", "1"}], "]"}], "]"}], ",", 
+          RowBox[{"list", "[", 
+           RowBox[{"[", 
+            RowBox[{"1", ",", "2"}], "]"}], "]"}], ",", 
+          RowBox[{"Cos", "[", "\[FormalT]", "]"}]}], "]"}]}], ";", "\n", "\n",
+        "  ", 
+       RowBox[{"If", "[", " ", 
+        RowBox[{
+         RowBox[{
+          RowBox[{"Simplify", "[", 
+           RowBox[{
+            RowBox[{
+             RowBox[{"Coefficient", "[", 
+              RowBox[{"s", ",", "legendre"}], "]"}], " ", "legendre"}], " ", "==",
+             " ", "s"}], "]"}], " ", "=!=", " ", "True"}], ",", " ", 
+         RowBox[{"Message", "[", 
+          RowBox[{
+           RowBox[{"DivideByLegendreP", "::", "PDependance"}], ",", "s"}], 
+          "]"}]}], "]"}], ";", "\n", "  ", 
+       RowBox[{"Coefficient", "[", 
+        RowBox[{"s", ",", "legendre"}], "]"}]}]}], "\n", "]"}]}], ";"}], 
+  "\n"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"displacement", "[", "waveSeries_", "]"}], ":=", 
+   RowBox[{"Module", "[", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"ur", ",", "u\[Theta]"}], "}"}], ",", "\n", "  ", 
+     RowBox[{
+      RowBox[{"ur", " ", "=", " ", 
+       RowBox[{
+        RowBox[{
+         RowBox[{"-", " ", "\"\<U\[CurlyPhi]\>\""}], 
+         RowBox[{"D", "[", 
+          RowBox[{
+           RowBox[{"waveSeries", "[", "\"\<\[CurlyPhi]\>\"", "]"}], ",", 
+           "\[FormalR]"}], "]"}]}], "-", " ", 
+        RowBox[{"\"\<U\[CurlyTheta]\>\"", 
+         RowBox[{"D", "[", 
+          RowBox[{
+           RowBox[{"waveSeries", "[", "\"\<\[CurlyTheta]\>\"", "]"}], ",", 
+           "\[FormalR]"}], "]"}]}], " ", "-", " ", 
+        RowBox[{
+         RowBox[{"1", "/", "\[FormalR]"}], 
+         RowBox[{"(", 
+          RowBox[{
+           RowBox[{"DifferentiateTheta", "[", 
+            RowBox[{"waveSeries", "[", "\"\<\[Chi]\>\"", "]"}], "]"}], " ", "/.",
+            "subLegendreDerivativeIdentity"}], ")"}]}]}]}], ";", "\n", "  ", 
+      RowBox[{"u\[Theta]", " ", "=", " ", 
+       RowBox[{
+        RowBox[{
+         RowBox[{"-", " ", 
+          RowBox[{"(", 
+           RowBox[{"1", "/", "\[FormalR]"}], ")"}]}], "\"\<U\[CurlyPhi]\>\"", 
+         " ", 
+         RowBox[{"DifferentiateTheta", "[", 
+          RowBox[{"waveSeries", "[", "\"\<\[CurlyPhi]\>\"", "]"}], "]"}]}], 
+        " ", "-", " ", 
+        RowBox[{
+         RowBox[{"(", 
+          RowBox[{"1", "/", "\[FormalR]"}], ")"}], "\"\<U\[CurlyTheta]\>\"", 
+         " ", 
+         RowBox[{"DifferentiateTheta", "[", 
+          RowBox[{"waveSeries", "[", "\"\<\[CurlyTheta]\>\"", "]"}], "]"}]}], 
+        " ", "+", " ", 
+        RowBox[{
+         RowBox[{"(", 
+          RowBox[{"1", "/", "\[FormalR]"}], ")"}], " ", 
+         RowBox[{"D", "[", 
+          RowBox[{
+           RowBox[{"\[FormalR]", " ", 
+            RowBox[{"DifferentiateTheta", "[", 
+             RowBox[{"waveSeries", "[", "\"\<\[Chi]\>\"", "]"}], "]"}]}], ",",
+            " ", "\[FormalR]"}], "]"}]}]}]}], " ", ";", "\n", "  ", 
+      RowBox[{"Return", "[", 
+       RowBox[{"SimplifySum", "/@", 
+        RowBox[{"{", 
+         RowBox[{"ur", ",", "u\[Theta]"}], "}"}]}], "]"}]}]}], "\n", "]"}]}], 
+  ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"traction", "[", 
+    RowBox[{"u_", ",", "T_"}], "]"}], ":=", 
+   RowBox[{"Module", "[", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{
+      "\[Sigma]rr", ",", "\[Sigma]r\[Theta]", ",", "ur", ",", "u\[Theta]"}], 
+      "}"}], ",", "\n", "  ", 
+     RowBox[{
+      RowBox[{"ur", "=", 
+       RowBox[{"u", "[", 
+        RowBox[{"[", "1", "]"}], "]"}]}], ";", " ", 
+      RowBox[{"u\[Theta]", "=", 
+       RowBox[{"u", "[", 
+        RowBox[{"[", "2", "]"}], "]"}]}], ";", "\n", "  ", 
+      RowBox[{"\[Sigma]rr", " ", "=", " ", 
+       RowBox[{
+        RowBox[{"2", " ", 
+         RowBox[{"(", "\"\<\[Lambda]\>\"", ")"}], 
+         RowBox[{"ur", "/", "\[FormalR]"}]}], " ", "+", " ", 
+        RowBox[{
+         RowBox[{"(", 
+          RowBox[{"\"\<\[Lambda]\>\"", "+", 
+           RowBox[{"2", "\"\<\[Mu]\>\""}]}], ")"}], "\[FormalR]", " ", 
+         RowBox[{"D", "[", 
+          RowBox[{"ur", ",", "\[FormalR]"}], "]"}]}], " ", "+", " ", 
+        RowBox[{
+         RowBox[{"(", "\"\<\[Lambda]\>\"", ")"}], 
+         RowBox[{"(", 
+          RowBox[{"1", "/", "\[FormalR]"}], ")"}], 
+         RowBox[{"(", 
+          RowBox[{"u\[Theta]", "/.", "subLegendreDerivativeIdentity"}], 
+          ")"}]}], " ", "-", " ", 
+        RowBox[{"\"\<pT\>\"", " ", "T"}]}]}], ";", "\n", "  ", 
+      RowBox[{"\[Sigma]r\[Theta]", " ", "=", " ", 
+       RowBox[{
+        RowBox[{"\"\<\[Mu]\>\"", " ", 
+         RowBox[{"D", "[", 
+          RowBox[{"u\[Theta]", ",", "\[FormalR]"}], "]"}]}], " ", "+", " ", 
+        RowBox[{
+         RowBox[{
+          RowBox[{"(", "\"\<\[Mu]\>\"", ")"}], "/", "\[FormalR]"}], " ", 
+         RowBox[{"(", 
+          RowBox[{
+           RowBox[{"DifferentiateTheta", "[", "ur", "]"}], " ", "-", " ", 
+           "u\[Theta]"}], ")"}]}]}]}], " ", ";", "\n", "  ", 
+      RowBox[{"Return", "[", 
+       RowBox[{"SimplifySum", "/@", 
+        RowBox[{"{", 
+         RowBox[{"\[Sigma]rr", ",", "\[Sigma]r\[Theta]"}], "}"}]}], "]"}]}]}],
+     "\n", "]"}]}], ";"}]}], "Code",
+ FontWeight->"Bold"],
+
+Cell[BoxData[
+ RowBox[{"Incident", " ", "wave"}]], "Code",
+ InitializationCell->False,
+ FontWeight->"Bold"],
+
+Cell[BoxData[
+ RowBox[{"  ", 
+  RowBox[{
+   RowBox[{
+    RowBox[{
+     RowBox[{"incidentSeries", "[", "\[Phi]_", "]"}], " ", ":=", " ", 
+     RowBox[{
+      RowBox[{"Inactive", "[", "Sum", "]"}], "[", " ", 
+      RowBox[{
+       RowBox[{
+        RowBox[{"I", "^", "\[FormalN]"}], " ", 
+        RowBox[{"(", 
+         RowBox[{
+          RowBox[{"2", "\[FormalN]"}], "+", "1"}], ")"}], " ", 
+        RowBox[{"\[FormalCapitalA]", "[", 
+         RowBox[{"\[Phi]", ",", "\[FormalN]", ",", "\"\<o\>\""}], "]"}], 
+        RowBox[{
+         RowBox[{"Inactive", "[", "SphericalBesselJ", "]"}], "[", 
+         RowBox[{"\[FormalN]", ",", 
+          RowBox[{
+           RowBox[{"\[FormalK]", "[", 
+            RowBox[{"\[Phi]", ",", "\"\<o\>\""}], "]"}], "\[FormalR]"}]}], 
+         "]"}], " ", 
+        RowBox[{"LegendreP", "[", 
+         RowBox[{"\[FormalN]", ",", 
+          RowBox[{"Cos", "[", "\[FormalT]", "]"}]}], "]"}]}], ",", 
+       RowBox[{"{", 
+        RowBox[{"\[FormalN]", ",", "0", ",", "\[Infinity]"}], "}"}]}], 
+      "]"}]}], ";"}], "\n", 
+   RowBox[{"(*", 
+    RowBox[{"Outside", " ", "waves"}], "*)"}], "\n", "  ", 
+   RowBox[{
+    RowBox[{
+     RowBox[{"outgoingSeries", "[", "\[Phi]_", "]"}], " ", ":=", " ", 
+     RowBox[{
+      RowBox[{"Inactive", "[", "Sum", "]"}], "[", " ", 
+      RowBox[{
+       RowBox[{
+        RowBox[{"I", "^", "\[FormalN]"}], " ", 
+        RowBox[{"(", 
+         RowBox[{
+          RowBox[{"2", "\[FormalN]"}], "+", "1"}], ")"}], " ", 
+        RowBox[{"\[FormalCapitalA]", "[", 
+         RowBox[{"\[Phi]", ",", "\[FormalN]", ",", "\"\<o\>\""}], "]"}], 
+        RowBox[{
+         RowBox[{
+          RowBox[{"Inactive", "[", "SphericalHankelH1", "]"}], "[", 
+          RowBox[{"\[FormalN]", ",", 
+           RowBox[{
+            RowBox[{"\[FormalK]", "[", 
+             RowBox[{"\[Phi]", ",", "\"\<o\>\""}], "]"}], "\[FormalR]"}]}], 
+          "]"}], "/", 
+         RowBox[{"SphericalHankelH1", "[", 
+          RowBox[{"\[FormalN]", ",", 
+           RowBox[{
+            RowBox[{"\[FormalK]", "[", 
+             RowBox[{"\[Phi]", ",", "\"\<o\>\""}], "]"}], 
+            "\"\<radius\>\""}]}], "]"}]}], " ", 
+        RowBox[{"LegendreP", "[", 
+         RowBox[{"\[FormalN]", ",", 
+          RowBox[{"Cos", "[", "\[FormalT]", "]"}]}], "]"}]}], ",", 
+       RowBox[{"{", 
+        RowBox[{"\[FormalN]", ",", "0", ",", "\[Infinity]"}], "}"}]}], 
+      "]"}]}], ";"}], "\n", 
+   RowBox[{"(*", 
+    RowBox[{"Inside", " ", "waves"}], "*)"}], "\n", "  ", 
+   RowBox[{
+    RowBox[{
+     RowBox[{"internalSeries", "[", "\[Phi]_", "]"}], " ", ":=", " ", 
+     RowBox[{
+      RowBox[{"Inactive", "[", "Sum", "]"}], "[", " ", 
+      RowBox[{
+       RowBox[{
+        RowBox[{"I", "^", "\[FormalN]"}], " ", 
+        RowBox[{"(", 
+         RowBox[{
+          RowBox[{"2", "\[FormalN]"}], "+", "1"}], ")"}], " ", 
+        RowBox[{"\[FormalCapitalA]", "[", 
+         RowBox[{"\[Phi]", ",", "\[FormalN]", ",", "\"\<i\>\""}], "]"}], 
+        RowBox[{
+         RowBox[{
+          RowBox[{"Inactive", "[", "SphericalBesselJ", "]"}], "[", 
+          RowBox[{"\[FormalN]", ",", 
+           RowBox[{
+            RowBox[{"\[FormalK]", "[", 
+             RowBox[{"\[Phi]", ",", "\"\<i\>\""}], "]"}], "\[FormalR]"}]}], 
+          "]"}], "/", 
+         RowBox[{"SphericalBesselJ", "[", 
+          RowBox[{"\[FormalN]", ",", 
+           RowBox[{
+            RowBox[{"\[FormalK]", "[", 
+             RowBox[{"\[Phi]", ",", "\"\<i\>\""}], "]"}], 
+            "\"\<radius\>\""}]}], "]"}]}], " ", 
+        RowBox[{"LegendreP", "[", 
+         RowBox[{"\[FormalN]", ",", 
+          RowBox[{"Cos", "[", "\[FormalT]", "]"}]}], "]"}]}], ",", 
+       RowBox[{"{", 
+        RowBox[{"\[FormalN]", ",", "0", ",", "\[Infinity]"}], "}"}]}], 
+      "]"}]}], ";"}], "\n", "\n", 
+   RowBox[{"(*", 
+    RowBox[{"Incident", " ", "pressure", " ", "dominated", " ", "waves"}], 
+    "*)"}], "\n", "  ", 
+   RowBox[{
+    RowBox[{"subincident", "=", " ", 
+     RowBox[{"{", 
+      RowBox[{
+       RowBox[{
+        RowBox[{"\[FormalCapitalA]", "[", 
+         RowBox[{"\"\<\[Chi]\>\"", ",", "_", ",", "\"\<o\>\""}], "]"}], "->", 
+        "0"}], ",", " ", 
+       RowBox[{
+        RowBox[{"\[FormalCapitalA]", "[", 
+         RowBox[{"\"\<\[CurlyTheta]\>\"", ",", "_", ",", "\"\<o\>\""}], "]"}],
+         "->", " ", "0"}], ",", " ", 
+       RowBox[{
+        RowBox[{"\[FormalCapitalA]", "[", 
+         RowBox[{
+         "\"\<\[CurlyPhi]\>\"", ",", "\[FormalN]_", ",", "\"\<o\>\""}], "]"}],
+         ":>", " ", 
+        RowBox[{"\[FormalCapitalA]", "[", 
+         RowBox[{
+         "\"\<\[CurlyPhi]0\>\"", ",", "\[FormalN]", ",", "\"\<o\>\""}], 
+         "]"}]}]}], "}"}]}], ";"}], "\n", "  ", 
+   RowBox[{
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"ur0", ",", "u\[Theta]0"}], "}"}], " ", "=", " ", 
+     RowBox[{
+      RowBox[{
+       RowBox[{"displacement", "[", "incidentSeries", "]"}], "/.", 
+       RowBox[{"subNto", "[", "\"\<o\>\"", "]"}]}], "/.", "subincident"}]}], 
+    ";"}], "\n", "  ", 
+   RowBox[{"(*", 
+    RowBox[{"Incident", " ", "temperature", " ", "field"}], "*)"}], " ", "\n",
+    "  ", 
+   RowBox[{
+    RowBox[{"\[Tau]0", " ", "=", " ", 
+     RowBox[{
+      RowBox[{"-", " ", 
+       RowBox[{"SimplifySum", "[", 
+        RowBox[{
+         RowBox[{"\"\<T0\>\"", "\"\<T\[CurlyPhi]\>\"", " ", 
+          RowBox[{"incidentSeries", "[", "\"\<\[CurlyPhi]\>\"", "]"}]}], "/.", 
+         RowBox[{"subNto", "[", "\"\<o\>\"", "]"}]}], "]"}]}], "/.", 
+      "subincident"}]}], ";"}], "\n", "\n", 
+   RowBox[{"(*", 
+    RowBox[{"Outgoing", " ", "waves"}], "*)"}], "\n", "  ", 
+   RowBox[{
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"uro", ",", "u\[Theta]o"}], "}"}], " ", "=", " ", 
+     RowBox[{
+      RowBox[{"displacement", "[", "outgoingSeries", "]"}], "/.", 
+      RowBox[{"subNto", "[", "\"\<o\>\"", "]"}]}]}], ";"}], "\n", "  ", 
+   RowBox[{
+    RowBox[{"ur", " ", "=", " ", 
+     RowBox[{"SimplifySum", "[", 
+      RowBox[{"uro", " ", "+", " ", "ur0"}], "]"}]}], ";"}], "\n", "  ", 
+   RowBox[{
+    RowBox[{"u\[Theta]", " ", "=", " ", 
+     RowBox[{"SimplifySum", "[", 
+      RowBox[{"u\[Theta]o", " ", "+", " ", "u\[Theta]0"}], "]"}]}], ";"}], 
+   "\n", "\n", 
+   RowBox[{"(*", 
+    RowBox[{"Outgoing", " ", "temperature", " ", "field"}], "*)"}], "\n", 
+   "  ", 
+   RowBox[{
+    RowBox[{"To", " ", "=", " ", 
+     RowBox[{"-", 
+      RowBox[{"SimplifySum", "[", 
+       RowBox[{
+        RowBox[{
+         RowBox[{"\"\<T0\>\"", "\"\<T\[CurlyPhi]\>\"", " ", 
+          RowBox[{"outgoingSeries", "[", "\"\<\[CurlyPhi]\>\"", "]"}]}], " ", 
+         "+", " ", 
+         RowBox[{"\"\<T0\>\"", "\"\<T\[CurlyTheta]\>\"", " ", 
+          RowBox[{"outgoingSeries", "[", "\"\<\[CurlyTheta]\>\"", "]"}]}]}], "/.", 
+        RowBox[{"subNto", "[", "\"\<o\>\"", "]"}]}], "]"}]}]}], ";"}], "\n", 
+   "  ", 
+   RowBox[{
+    RowBox[{"Temp", " ", "=", " ", 
+     RowBox[{"SimplifySum", "[", 
+      RowBox[{"\[Tau]0", " ", "+", " ", "To"}], "]"}]}], ";"}], "\n", "\n", 
+   "  ", 
+   RowBox[{
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"\[Sigma]rr", ",", "\[Sigma]r\[Theta]"}], "}"}], " ", "=", " ", 
+     
+     RowBox[{
+      RowBox[{"traction", "[", 
+       RowBox[{
+        RowBox[{"{", 
+         RowBox[{"ur", ",", "u\[Theta]"}], "}"}], ",", "Temp"}], "]"}], "/.", 
+      
+      RowBox[{"subNto", "[", "\"\<o\>\"", "]"}]}]}], ";"}], "\n", "\n", 
+   RowBox[{"(*", 
+    RowBox[{"Internal", " ", "waves"}], "*)"}], "\n", "  ", 
+   RowBox[{
+    RowBox[{"Ti", " ", "=", " ", 
+     RowBox[{"-", 
+      RowBox[{"SimplifySum", "[", 
+       RowBox[{
+        RowBox[{
+         RowBox[{"\"\<T0\>\"", "\"\<T\[CurlyPhi]\>\"", " ", 
+          RowBox[{"internalSeries", "[", "\"\<\[CurlyPhi]\>\"", "]"}]}], " ", 
+         "+", " ", 
+         RowBox[{"\"\<T0\>\"", "\"\<T\[CurlyTheta]\>\"", " ", 
+          RowBox[{"internalSeries", "[", "\"\<\[CurlyTheta]\>\"", "]"}]}]}], "/.", 
+        RowBox[{"subNto", "[", "\"\<i\>\"", "]"}]}], "]"}]}]}], ";"}], "\n", 
+   "\n", "  ", 
+   RowBox[{
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"uri", ",", "u\[Theta]i"}], "}"}], " ", "=", " ", 
+     RowBox[{
+      RowBox[{"displacement", "[", "internalSeries", "]"}], "/.", 
+      RowBox[{"subNto", "[", "\"\<i\>\"", "]"}]}]}], ";"}], "\n", "  ", 
+   RowBox[{
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"\[Sigma]rri", ",", "\[Sigma]r\[Theta]i"}], "}"}], " ", "=", 
+     " ", 
+     RowBox[{
+      RowBox[{"traction", "[", 
+       RowBox[{
+        RowBox[{"{", 
+         RowBox[{"uri", ",", "u\[Theta]i"}], "}"}], ",", "Ti"}], "]"}], "/.", 
+      
+      RowBox[{"subNto", "[", "\"\<i\>\"", "]"}]}]}], ";"}], "\n", "\n", 
+   RowBox[{"(*", 
+    RowBox[{"Apply", " ", "the", " ", "boundary", " ", "conditions"}], "*)"}],
+    "\n", 
+   RowBox[{
+    RowBox[{"roots", " ", "=", " ", 
+     RowBox[{"{", "}"}]}], ";"}], "\n", 
+   RowBox[{
+    RowBox[{"AppendTo", "[", 
+     RowBox[{"roots", ",", 
+      RowBox[{"DivideByLegendreP", "[", 
+       RowBox[{
+        RowBox[{"ur", "-", "uri"}], "/.", 
+        RowBox[{"subpickOut", "[", 
+         RowBox[{"\[FormalN]", ",", "\[FormalM]"}], "]"}]}], "]"}]}], " ", 
+     "]"}], ";"}], "\n", 
+   RowBox[{
+    RowBox[{"AppendTo", "[", 
+     RowBox[{"roots", ",", 
+      RowBox[{"DivideByLegendreP", "[", 
+       RowBox[{
+        RowBox[{"u\[Theta]", "-", "u\[Theta]i"}], "/.", 
+        RowBox[{"subpickOut", "[", 
+         RowBox[{"\[FormalN]", ",", "\[FormalM]"}], "]"}]}], "]"}]}], " ", 
+     "]"}], ";"}], "\n", 
+   RowBox[{
+    RowBox[{"AppendTo", "[", 
+     RowBox[{"roots", ",", 
+      RowBox[{"DivideByLegendreP", "[", 
+       RowBox[{
+        RowBox[{"\[Sigma]rr", "-", "\[Sigma]rri"}], "/.", 
+        RowBox[{"subpickOut", "[", 
+         RowBox[{"\[FormalN]", ",", "\[FormalM]"}], "]"}]}], "]"}]}], " ", 
+     "]"}], ";"}], "\n", 
+   RowBox[{
+    RowBox[{"AppendTo", "[", 
+     RowBox[{"roots", ",", 
+      RowBox[{"DivideByLegendreP", "[", 
+       RowBox[{
+        RowBox[{"\[Sigma]r\[Theta]", "-", "\[Sigma]r\[Theta]i"}], "/.", 
+        RowBox[{"subpickOut", "[", 
+         RowBox[{"\[FormalN]", ",", "\[FormalM]"}], "]"}]}], "]"}]}], " ", 
+     "]"}], ";"}], "\n", 
+   RowBox[{
+    RowBox[{"AppendTo", "[", 
+     RowBox[{"roots", ",", 
+      RowBox[{"DivideByLegendreP", "[", 
+       RowBox[{
+        RowBox[{"Temp", "-", "Ti"}], "/.", 
+        RowBox[{"subpickOut", "[", 
+         RowBox[{"\[FormalN]", ",", "\[FormalM]"}], "]"}]}], "]"}]}], " ", 
+     "]"}], ";"}], "\n", 
+   RowBox[{
+    RowBox[{"AppendTo", "[", 
+     RowBox[{"roots", ",", 
+      RowBox[{"DivideByLegendreP", "[", 
+       RowBox[{
+        RowBox[{
+         RowBox[{"\"\<\[Kappa]o\>\"", 
+          RowBox[{"D", "[", 
+           RowBox[{"Temp", ",", "\[FormalR]"}], "]"}]}], "-", 
+         RowBox[{"\"\<\[Kappa]i\>\"", 
+          RowBox[{"D", "[", 
+           RowBox[{"Ti", ",", "\[FormalR]"}], "]"}]}]}], "/.", 
+        RowBox[{"subpickOut", "[", 
+         RowBox[{"\[FormalN]", ",", "\[FormalM]"}], "]"}]}], "]"}]}], " ", 
+     "]"}], ";"}], "\n", "\n", 
+   RowBox[{"(*", 
+    RowBox[{"just", " ", "to", " ", "simplify"}], "*)"}], "\n", 
+   RowBox[{
+    RowBox[{"terms", " ", "=", " ", 
+     RowBox[{"{", 
+      RowBox[{
+       RowBox[{
+        RowBox[{"1", "/", "\[FormalR]"}], " ", 
+        RowBox[{"I", "^", "\[FormalM]"}], " ", 
+        RowBox[{"(", 
+         RowBox[{"1", "+", 
+          RowBox[{"2", "\[FormalM]"}]}], ")"}]}], ",", " ", 
+       RowBox[{
+        RowBox[{"1", "/", "\[FormalR]"}], " ", 
+        RowBox[{"I", "^", "\[FormalM]"}], " ", 
+        RowBox[{"(", 
+         RowBox[{"1", "+", 
+          RowBox[{"2", "\[FormalM]"}]}], ")"}]}], ",", 
+       RowBox[{
+        RowBox[{"I", "^", "\[FormalM]"}], 
+        RowBox[{"(", 
+         RowBox[{"1", "+", 
+          RowBox[{"2", "\[FormalM]"}]}], ")"}]}], ",", " ", 
+       RowBox[{
+        RowBox[{"1", "/", 
+         RowBox[{"\[FormalR]", "^", "2"}]}], " ", 
+        RowBox[{"I", "^", "\[FormalM]"}], " ", 
+        RowBox[{"(", 
+         RowBox[{"1", "+", 
+          RowBox[{"2", "\[FormalM]"}]}], ")"}]}], ",", " ", 
+       RowBox[{
+        RowBox[{"I", "^", "\[FormalM]"}], " ", 
+        RowBox[{"(", 
+         RowBox[{"1", "+", 
+          RowBox[{"2", "\[FormalM]"}]}], ")"}]}], ",", " ", 
+       RowBox[{
+        RowBox[{"I", "^", "\[FormalM]"}], " ", 
+        RowBox[{"(", 
+         RowBox[{"1", "+", 
+          RowBox[{"2", "\[FormalM]"}]}], ")"}]}]}], "}"}]}], ";"}], "\n", 
+   RowBox[{
+    RowBox[{"roots", " ", "=", 
+     RowBox[{
+      RowBox[{"(", 
+       RowBox[{
+        RowBox[{"roots", "/", "terms"}], " ", "/.", " ", 
+        RowBox[{"\[FormalR]", "->", "\"\<radius\>\""}]}], ")"}], " ", "//", 
+      "Simplify"}]}], ";"}], "\n", "\n", 
+   RowBox[{"(*", 
+    RowBox[{"unknowns", " ", "to", " ", "solve", " ", "for"}], "*)"}], "\n", 
+   RowBox[{
+    RowBox[{"coefs", " ", "=", " ", 
+     RowBox[{"{", 
+      RowBox[{
+       RowBox[{"\[FormalCapitalA]", "[", 
+        RowBox[{"\"\<\[CurlyPhi]\>\"", ",", "\[FormalM]", ",", "\"\<o\>\""}], 
+        "]"}], ",", 
+       RowBox[{"\[FormalCapitalA]", "[", 
+        RowBox[{"\"\<\[CurlyPhi]\>\"", ",", "\[FormalM]", ",", "\"\<i\>\""}], 
+        "]"}], ",", 
+       RowBox[{"\[FormalCapitalA]", "[", 
+        RowBox[{
+        "\"\<\[CurlyTheta]\>\"", ",", "\[FormalM]", ",", "\"\<o\>\""}], "]"}],
+        ",", 
+       RowBox[{"\[FormalCapitalA]", "[", 
+        RowBox[{
+        "\"\<\[CurlyTheta]\>\"", ",", "\[FormalM]", ",", "\"\<i\>\""}], "]"}],
+        ",", 
+       RowBox[{"\[FormalCapitalA]", "[", 
+        RowBox[{"\"\<\[Chi]\>\"", ",", "\[FormalM]", ",", "\"\<o\>\""}], 
+        "]"}], ",", 
+       RowBox[{"\[FormalCapitalA]", "[", 
+        RowBox[{"\"\<\[Chi]\>\"", ",", "\[FormalM]", ",", "\"\<i\>\""}], 
+        "]"}]}], "}"}]}], ";"}], "\n", 
+   RowBox[{"(*", 
+    RowBox[{
+    "coefficients", " ", "of", " ", "the", " ", "incident", " ", "wave"}], 
+    "*)"}], "\n", 
+   RowBox[{
+    RowBox[{"coef0s", " ", "=", " ", 
+     RowBox[{"{", 
+      RowBox[{"\[FormalCapitalA]", "[", 
+       RowBox[{"\"\<\[CurlyPhi]0\>\"", ",", "\[FormalM]", ",", "\"\<o\>\""}], 
+       "]"}], "}"}]}], ";"}], "\n", 
+   RowBox[{
+    RowBox[{"M", " ", "=", " ", 
+     RowBox[{
+      RowBox[{"Outer", "[", 
+       RowBox[{
+        RowBox[{
+         RowBox[{"Coefficient", "[", 
+          RowBox[{"#1", ",", "#2"}], "]"}], "&"}], ",", "roots", ",", 
+        "coefs"}], "]"}], "//", "Simplify"}]}], ";"}], "\n", 
+   RowBox[{
+    RowBox[{"b0", " ", "=", " ", 
+     RowBox[{
+      RowBox[{"Outer", "[", 
+       RowBox[{
+        RowBox[{
+         RowBox[{"Coefficient", "[", 
+          RowBox[{"#1", ",", "#2"}], "]"}], "&"}], ",", "roots", ",", 
+        "coef0s"}], "]"}], "//", "Simplify"}]}], ";"}], "\n", 
+   RowBox[{
+    RowBox[{"Print", "[", 
+     RowBox[{"\"\<Extracted coefficients correctly: \>\"", ",", " ", 
+      RowBox[{
+       RowBox[{
+        RowBox[{
+         RowBox[{"M", ".", "coefs"}], " ", "+", " ", 
+         RowBox[{"b0", ".", "coef0s"}]}], " ", "==", " ", "roots"}], " ", "//",
+        "Simplify"}]}], "]"}], ";"}], "\n", "\n", 
+   RowBox[{
+    RowBox[{"b", " ", "=", " ", 
+     RowBox[{"Simplify", "[", 
+      RowBox[{"Activate", "[", 
+       RowBox[{"b0", ".", "coef0s"}], "]"}], "]"}]}], ";"}], "\n", 
+   RowBox[{
+    RowBox[{"M", " ", "=", " ", 
+     RowBox[{"Simplify", "[", 
+      RowBox[{"Activate", "[", "M", "]"}], "]"}]}], ";"}], "\n", "\n", 
+   RowBox[{
+    RowBox[{"End", "[", "]"}], ";"}], "\n", 
+   RowBox[{
+    RowBox[{"EndPackage", "[", "]"}], ";"}], "\n", "\n"}]}]], "Code",
+ FontWeight->"Bold"]
+},
+WindowSize->{1280, 1000},
+WindowMargins->{{0, Automatic}, {Automatic, 0}},
+FrontEndVersion->"11.0 for Linux x86 (64-bit) (September 21, 2016)",
+StyleDefinitions->"Default.nb"
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[558, 20, 74, 2, 25, "Code",
+ InitializationCell->False],
+Cell[635, 24, 4562, 123, 720, "Code"],
+Cell[5200, 149, 74, 2, 25, "Code",
+ InitializationCell->False],
+Cell[5277, 153, 4660, 137, 805, "Code"],
+Cell[9940, 292, 251, 6, 25, "Code",
+ InitializationCell->False],
+Cell[10194, 300, 39885, 997, 3335, "Code"],
+Cell[50082, 1299, 74, 2, 70, "Code",
+ InitializationCell->False],
+Cell[50159, 1303, 18161, 463, 70, "Code"],
+Cell[68323, 1768, 319, 9, 70, "Code",
+ InitializationCell->False],
+Cell[68645, 1779, 10487, 278, 70, "Code"],
+Cell[79135, 2059, 107, 3, 70, "Code",
+ InitializationCell->False],
+Cell[79245, 2064, 15418, 420, 70, "Code"]
+}
+]
+*)
+
+(* End of internal cache information *)
+
